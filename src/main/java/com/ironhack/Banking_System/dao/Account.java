@@ -5,10 +5,12 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.GenericGenerator;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.time.LocalDate;
 
 @Entity
@@ -20,31 +22,30 @@ import java.time.LocalDate;
 public class Account {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "uuid")
+    @Column(columnDefinition = "CHAR(32)")
     private Long id;
 
     private BigDecimal balance;
     private String primaryOwner;
     private String secondaryOwner;
-
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private LocalDate creationDate;
+    private Timestamp creationDate;
 
     @Enumerated(EnumType.STRING)
     private Status status;
 
     private String secretKey;
-    private BigDecimal penaltyFee;
+    private Money penaltyFee;
 
-    public Account(BigDecimal balance, String primaryOwner, String secondaryOwner, LocalDate creationDate,
-                   Status status, String secretKey, BigDecimal penaltyFee) {
+    public Account(BigDecimal balance, String primaryOwner, String secondaryOwner, String secretKey) {
         this.balance = balance;
         this.primaryOwner = primaryOwner;
         this.secondaryOwner = secondaryOwner;
-        this.creationDate = creationDate;
-        this.status = status;
+        creationDate = new Timestamp(System.currentTimeMillis());
+        status = Status.ACTIVE;
         this.secretKey = secretKey;
-        this.penaltyFee = penaltyFee;
+        penaltyFee = new Money(new BigDecimal("40"));
     }
 }
 
