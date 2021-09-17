@@ -1,5 +1,6 @@
 package com.ironhack.Banking_System.dao;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -16,8 +17,8 @@ public class ThirdParty extends UserType{
 
     private String hashedKey;
 
-    public ThirdParty(Long id, String name, String email, String hashedKey) {
-        super(id, name, email);
-        this.hashedKey = hashedKey;
+    public ThirdParty(String name, String email, String hashedKey) {
+        super(name, email);
+        setHashedKey(hashedKey);
     }
 }

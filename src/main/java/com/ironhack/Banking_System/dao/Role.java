@@ -8,22 +8,19 @@ import lombok.Setter;
 import javax.persistence.*;
 
 @Entity
-@Getter
 @Setter
-@AllArgsConstructor
+@Getter
 @NoArgsConstructor
-@Inheritance(strategy = InheritanceType.JOINED)
-public class UserType {
+@AllArgsConstructor
+public class Role {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;
-    private String email;
 
-    public UserType(String name, String email) {
-        this.name = name;
-        this.email = email;
-    }
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 }

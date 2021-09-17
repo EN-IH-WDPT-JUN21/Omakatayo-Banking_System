@@ -1,5 +1,6 @@
 package com.ironhack.Banking_System.dao;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -33,12 +34,12 @@ public class AccountHolder extends UserType{
     @Embedded
     private Address mailingAddress;
 
-    public AccountHolder(Long id, String name, String email, LocalDate dateOfBirth, Address primaryAddress,
+    public AccountHolder(String name, String email, LocalDate dateOfBirth, Address primaryAddress,
                          Address mailingAddress) {
-        super(id, name, email);
-        this.dateOfBirth = dateOfBirth;
-        this.primaryAddress = primaryAddress;
-        this.mailingAddress = mailingAddress;
+        super(name, email);
+        setDateOfBirth(dateOfBirth);
+        setPrimaryAddress(primaryAddress);
+        setMailingAddress(mailingAddress);
     }
 
     public Optional getMailingAddress() {
