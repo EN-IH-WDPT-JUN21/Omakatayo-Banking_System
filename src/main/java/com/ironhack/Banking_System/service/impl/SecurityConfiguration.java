@@ -1,6 +1,8 @@
 package com.ironhack.Banking_System.service.impl;
 
+import com.ironhack.Banking_System.dao.Role;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -38,12 +40,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.httpBasic();
         http.csrf().disable();
         http.authorizeRequests()
-                .mvcMatchers(HttpMethod.GET, "/index.html").authenticated()
-                //.mvcMatchers(HttpMethod.GET, "/products/**").hasAnyRole("ADMIN", "USER")
-                //.mvcMatchers(HttpMethod.POST, "/products").hasAnyRole("ADMIN", "TECHNICIAN")
+                .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
+                .antMatchers("/resources/**").authenticated()
+               //.antMatchers("/resources/**").authenticated()
+
+               //.mvcMatchers(HttpMethod.GET, "/").authenticated()
+               //.mvcMatchers(HttpMethod.GET, "/products/**").hasAnyRole("ADMIN", "USER")
+               //.mvcMatchers(HttpMethod.POST, "/products").hasAnyRole("ADMIN", "TECHNICIAN")
                 .anyRequest().permitAll();
-
-
 
     }
 }

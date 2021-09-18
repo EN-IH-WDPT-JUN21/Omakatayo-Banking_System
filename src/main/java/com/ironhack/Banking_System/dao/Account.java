@@ -5,40 +5,57 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.GenericGenerator;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.time.LocalDate;
 
-@Entity
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Inheritance(strategy = InheritanceType.JOINED)
+@MappedSuperclass()
 public class Account {
 
     @Id
-    @GeneratedValue(generator = "uuid")
-    @GenericGenerator(name = "uuid", strategy = "uuid")
-    @Column(columnDefinition = "CHAR(32)")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private BigDecimal balance;
+    @AttributeOverrides({
+            @AttributeOverride(name = "amount", column = @Column(name = "balance")),
+            @AttributeOverride(name = "currency", column = @Column(name = "balance_currency"))
+    })
+    @Embedded
+    private Money balance;
+
     private String primaryOwner;
     private String secondaryOwner;
-    private Timestamp creationDate;
+    private Timestamp creationDate = new Timestamp(System.currentTimeMillis());
 
     @Enumerated(EnumType.STRING)
-    private Status status;
+    private Status status = Status.ACTIVE;
 
     private String secretKey;
-    private Money penaltyFee;
 
-    public Account(BigDecimal balance, String primaryOwner, String secondaryOwner, String secretKey) {
+    @AttributeOverrides({
+            @AttributeOverride(name = "amount", column = @Column(name = "penalty_fee")),
+            @AttributeOverride(name = "currency", column = @Column(name = "penalty_fee_currency"))
+    })
+    @Embedded
+    private Money penaltyFee; // = new Money(new BigDecimal("40"));
+
+    public Account(Money balance, String primaryOwner, String secondaryOwner, Timestamp creationDate,
+                   Status status, String secretKey, Money penaltyFee) {
+        this.balance = balance;
+        this.primaryOwner = primaryOwner;
+        this.secondaryOwner = secondaryOwner;
+        this.creationDate = creationDate;
+        this.status = status;
+        this.secretKey = secretKey;
+        this.penaltyFee = penaltyFee;
+    }
+
+    public Account(Money balance, String primaryOwner, String secondaryOwner, String secretKey) {
         this.balance = balance;
         this.primaryOwner = primaryOwner;
         this.secondaryOwner = secondaryOwner;
@@ -47,6 +64,7 @@ public class Account {
         this.secretKey = secretKey;
         penaltyFee = new Money(new BigDecimal("40"));
     }
+
 }
 
 

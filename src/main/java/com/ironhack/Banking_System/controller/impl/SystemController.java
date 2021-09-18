@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class SystemController implements ISystemController {
 
-    @GetMapping("/")
+    /*@GetMapping("/")
     @ResponseStatus(HttpStatus.OK)
     public String helloWorld() {
         return "Hello World";
-    }
+    }*/
 }

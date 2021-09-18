@@ -1,10 +1,9 @@
 package com.ironhack.Banking_System.dao;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
+import org.springframework.format.annotation.DateTimeFormat;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Optional;
@@ -13,9 +12,9 @@ import java.util.Optional;
 @Setter
 @Getter
 @NoArgsConstructor
-@PrimaryKeyJoinColumn(name = "id")
 public class AccountHolder extends UserType{
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate dateOfBirth;
 
     @AttributeOverrides({
@@ -42,7 +41,7 @@ public class AccountHolder extends UserType{
         setMailingAddress(mailingAddress);
     }
 
-    public Optional getMailingAddress() {
+    public Optional setMailingAddress() {
         return Optional.ofNullable(mailingAddress);
     }
 }
