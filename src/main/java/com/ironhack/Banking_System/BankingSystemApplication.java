@@ -26,5 +26,6 @@ public class BankingSystemApplication implements CommandLineRunner {
 		Checking checking = new Checking(new Money(new BigDecimal("1000")), "Tom", "John", "12345",
 												   new Money(new BigDecimal("100")), new Money(new BigDecimal("30")));
 		checkingRepository.save(checking);
+
 	}
 }

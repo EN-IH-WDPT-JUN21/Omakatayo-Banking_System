@@ -37,17 +37,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.httpBasic();
-        http.csrf().disable();
-        http.authorizeRequests()
-                .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
-                .antMatchers("/resources/**").authenticated()
-               //.antMatchers("/resources/**").authenticated()
-
-               //.mvcMatchers(HttpMethod.GET, "/").authenticated()
-               //.mvcMatchers(HttpMethod.GET, "/products/**").hasAnyRole("ADMIN", "USER")
-               //.mvcMatchers(HttpMethod.POST, "/products").hasAnyRole("ADMIN", "TECHNICIAN")
-                .anyRequest().permitAll();
+        http
+                .csrf().disable()
+                .authorizeRequests()
+                .antMatchers("/", "index", "/css/*", "/js/*").permitAll()
+                .anyRequest().authenticated()
+                .and()
+                .formLogin();
 
     }
 }
