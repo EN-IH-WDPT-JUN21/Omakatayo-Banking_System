@@ -1,3 +1,4 @@
+/*
 package com.ironhack.Banking_System.controller.impl;
 
 import com.ironhack.Banking_System.controller.interfaces.IHomePageController;
@@ -29,3 +30,4 @@ public class HomePageController implements IHomePageController {
         return "index"; //note that this says .html
     }
 }
+*/

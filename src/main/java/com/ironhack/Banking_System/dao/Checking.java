@@ -6,7 +6,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.Arrays;
 
 @Entity
 @Setter
@@ -28,13 +30,13 @@ public class Checking extends Account {
     @Embedded
     private Money monthlyMaintenanceFee;
 
-    public Checking(Money balance, String primaryOwner, String secondaryOwner, Timestamp creationDate,
+    /*public Checking(Money balance, String primaryOwner, String secondaryOwner, Timestamp creationDate,
                     Status status, String secretKey, Money penaltyFee, Money minimumBalance,
                     Money monthlyMaintenanceFee) {
         super(balance, primaryOwner, secondaryOwner, creationDate, status, secretKey, penaltyFee);
         setMinimumBalance(minimumBalance);
         setMonthlyMaintenanceFee(monthlyMaintenanceFee);
-    }
+    }*/
 
     public Checking(Money balance, String primaryOwner, String secondaryOwner,
                     String secretKey, Money minimumBalance,
@@ -42,5 +44,14 @@ public class Checking extends Account {
         super(balance, primaryOwner, secondaryOwner, secretKey);
         setMinimumBalance(minimumBalance);
         setMonthlyMaintenanceFee(monthlyMaintenanceFee);
+    }
+
+    public interface showAccount {
+
+        Long getId();
+        BigDecimal getBalance();
+        String getPrimaryOwner();
+        String getCreationDate();
+        String getStatus();
     }
 }
