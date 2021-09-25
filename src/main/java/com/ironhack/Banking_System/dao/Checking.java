@@ -30,28 +30,23 @@ public class Checking extends Account {
     @Embedded
     private Money monthlyMaintenanceFee;
 
-    /*public Checking(Money balance, String primaryOwner, String secondaryOwner, Timestamp creationDate,
-                    Status status, String secretKey, Money penaltyFee, Money minimumBalance,
-                    Money monthlyMaintenanceFee) {
-        super(balance, primaryOwner, secondaryOwner, creationDate, status, secretKey, penaltyFee);
-        setMinimumBalance(minimumBalance);
-        setMonthlyMaintenanceFee(monthlyMaintenanceFee);
-    }*/
 
-    public Checking(Money balance, String primaryOwner, String secondaryOwner,
-                    String secretKey, Money minimumBalance,
+    public Checking(Money balance, Owner primaryOwner, Owner secondaryOwner, Money minimumBalance,
                     Money monthlyMaintenanceFee) {
-        super(balance, primaryOwner, secondaryOwner, secretKey);
+        super(balance, primaryOwner, secondaryOwner);
         setMinimumBalance(minimumBalance);
         setMonthlyMaintenanceFee(monthlyMaintenanceFee);
     }
 
-    public interface showAccount {
+    public Checking(Money balance, Owner primaryOwner, Money minimumBalance, Money monthlyMaintenanceFee) {
+        super(balance, primaryOwner);
+        setMinimumBalance(minimumBalance);
+        setMonthlyMaintenanceFee(monthlyMaintenanceFee);
+    }
 
-        Long getId();
-        BigDecimal getBalance();
-        String getPrimaryOwner();
-        String getCreationDate();
-        String getStatus();
+    public Checking(Money balance, Money minimumBalance, Money monthlyMaintenanceFee) {
+        super(balance);
+        setMinimumBalance(minimumBalance);
+        setMonthlyMaintenanceFee(monthlyMaintenanceFee);
     }
 }

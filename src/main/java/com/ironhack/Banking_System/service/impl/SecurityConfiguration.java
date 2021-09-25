@@ -41,11 +41,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.httpBasic();
         http.csrf().disable();
         http.authorizeRequests()
+
             .antMatchers("/", "index", "/css/*", "/js/*").permitAll()
-            .mvcMatchers(HttpMethod.GET, "/account").authenticated()
+            .mvcMatchers(HttpMethod.GET, "/api/v1/*").authenticated()
+            .mvcMatchers(HttpMethod.POST, "/api/v1/*").authenticated()
             .anyRequest().authenticated();
         //.and()
-
-
     }
 }

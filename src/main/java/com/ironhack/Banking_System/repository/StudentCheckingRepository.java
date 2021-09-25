@@ -13,5 +13,5 @@ public interface StudentCheckingRepository extends JpaRepository<StudentChecking
 
     @Query(value = "SELECT o.id, o.balance, o.primary_owner, o.status, o.creation_date FROM student_checking o",
             nativeQuery = true)
-    List<Checking.showAccount> findAllIdBalanceName();
+    List<StudentChecking> findAllIdBalanceName();
 }

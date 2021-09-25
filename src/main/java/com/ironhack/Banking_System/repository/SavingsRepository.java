@@ -13,5 +13,5 @@ public interface SavingsRepository extends JpaRepository<Savings, Long> {
 
     @Query(value = "SELECT o.id, o.balance, o.primary_owner, o.status, o.creation_date FROM Savings o", nativeQuery =
             true)
-    List<Checking.showAccount> findAllIdBalanceName();
+    List<Savings> findAllIdBalanceName();
 }

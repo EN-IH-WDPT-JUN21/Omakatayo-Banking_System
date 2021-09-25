@@ -14,7 +14,11 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 public class StudentChecking extends Account {
 
-    public StudentChecking(Money balance, String primaryOwner, String secondaryOwner, String secretKey) {
-        super(balance, primaryOwner, secondaryOwner, secretKey);
+    public StudentChecking(Money balance, Owner primaryOwner, Owner secondaryOwner) {
+        super(balance, primaryOwner, secondaryOwner);
+    }
+
+    public StudentChecking(Money balance, Owner primaryOwner) {
+        super(balance, primaryOwner);
     }
 }

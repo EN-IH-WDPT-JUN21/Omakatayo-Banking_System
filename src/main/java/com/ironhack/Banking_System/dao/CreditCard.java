@@ -25,29 +25,51 @@ public class CreditCard extends Account {
     @Embedded
     private Money creditLimit;
 
-    public CreditCard(Money balance, String primaryOwner, String secondaryOwner, String secretKey) {
-        super(balance, primaryOwner, secondaryOwner, secretKey);
+    public CreditCard(Money balance, Owner primaryOwner, Owner secondaryOwner) {
+        super(balance, primaryOwner, secondaryOwner);
         interestRate = new BigDecimal("0.2");
         creditLimit = new Money(new BigDecimal("100"));
     }
 
-    public CreditCard(Money balance, String primaryOwner, String secondaryOwner, String secretKey,
-                      Money creditLimit) {
-        super(balance, primaryOwner, secondaryOwner, secretKey);
+    public CreditCard(Money balance, Owner primaryOwner, Owner secondaryOwner, Money creditLimit) {
+        super(balance, primaryOwner, secondaryOwner);
         interestRate = new BigDecimal("0.2");
         setCreditLimit(creditLimit);
     }
 
-    public CreditCard(Money balance, String primaryOwner, String secondaryOwner, String secretKey,
-                      BigDecimal interestRate) {
-        super(balance, primaryOwner, secondaryOwner, secretKey);
+    public CreditCard(Money balance, Owner primaryOwner, Owner secondaryOwner, BigDecimal interestRate) {
+        super(balance, primaryOwner, secondaryOwner);
         setInterestRate(interestRate);
         creditLimit = new Money(new BigDecimal("100"));
     }
 
-    public CreditCard(Money balance, String primaryOwner, String secondaryOwner, String secretKey,
-                      BigDecimal interestRate, Money creditLimit) {
-        super(balance, primaryOwner, secondaryOwner, secretKey);
+    public CreditCard(Money balance, Owner primaryOwner, Owner secondaryOwner, BigDecimal interestRate,
+                      Money creditLimit) {
+        super(balance, primaryOwner, secondaryOwner);
+        setInterestRate(interestRate);
+        setCreditLimit(creditLimit);
+    }
+
+    public CreditCard(Money balance, Owner primaryOwner) {
+        super(balance, primaryOwner);
+        interestRate = new BigDecimal("0.2");
+        creditLimit = new Money(new BigDecimal("100"));
+    }
+
+    public CreditCard(Money balance, Owner primaryOwner, Money creditLimit) {
+        super(balance, primaryOwner);
+        interestRate = new BigDecimal("0.2");
+        setCreditLimit(creditLimit);
+    }
+
+    public CreditCard(Money balance, Owner primaryOwner, BigDecimal interestRate) {
+        super(balance, primaryOwner);
+        setInterestRate(interestRate);
+        creditLimit = new Money(new BigDecimal("100"));
+    }
+
+    public CreditCard(Money balance, Owner primaryOwner, BigDecimal interestRate, Money creditLimit) {
+        super(balance, primaryOwner);
         setInterestRate(interestRate);
         setCreditLimit(creditLimit);
     }

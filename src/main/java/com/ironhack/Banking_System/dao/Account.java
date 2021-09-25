@@ -1,24 +1,22 @@
 package com.ironhack.Banking_System.dao;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.PropertyNamingStrategy;
-import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.ironhack.Banking_System.enums.Status;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @MappedSuperclass()
-@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class Account {
 
     @Id
@@ -32,44 +30,57 @@ public class Account {
     @Embedded
     private Money balance;
 
-    @Column(name = "primaryOwner")
-    private String primaryOwner;
-    private String secondaryOwner;
-    @Column(name = "creationDate")
-    private Timestamp creationDate = new Timestamp(System.currentTimeMillis());
+    @AttributeOverrides({
+            @AttributeOverride(name = "firstName", column = @Column(name = "primary_first_name")),
+            @AttributeOverride(name = "lastName", column = @Column(name = "primary_last_name")),
+            @AttributeOverride(name = "age", column = @Column(name = "primary_age"))
+    })
+    @Embedded
+    private Owner primaryOwner;
+
+    @AttributeOverrides({
+            @AttributeOverride(name = "firstName", column = @Column(name = "secondary_first_name")),
+            @AttributeOverride(name = "lastName", column = @Column(name = "secondary_last_name")),
+            @AttributeOverride(name = "age", column = @Column(name = "secondary_age"))
+    })
+    @Embedded
+    private Owner secondaryOwner;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime creationDate = LocalDateTime.now();
 
     @Enumerated(EnumType.STRING)
     private Status status = Status.ACTIVE;
 
     private String secretKey;
 
+    @PrePersist
+    public void autoGenerateSecretKey() {
+        this.setSecretKey(UUID.randomUUID().toString());
+    }
+
     @AttributeOverrides({
             @AttributeOverride(name = "amount", column = @Column(name = "penalty_fee")),
             @AttributeOverride(name = "currency", column = @Column(name = "penalty_fee_currency"))
     })
     @Embedded
-    private Money penaltyFee; // = new Money(new BigDecimal("40"));
+    private Money penaltyFee = new Money(new BigDecimal("40"));
 
-    /*public Account(Money balance, String primaryOwner, String secondaryOwner, Timestamp creationDate,
-                   Status status, String secretKey, Money penaltyFee) {
+    public Account(Money balance, Owner primaryOwner, Owner secondaryOwner) {
         this.balance = balance;
         this.primaryOwner = primaryOwner;
         this.secondaryOwner = secondaryOwner;
-        this.creationDate = creationDate;
-        this.status = status;
-        this.secretKey = secretKey;
-        this.penaltyFee = penaltyFee;
-    }*/
-
-    public Account(Money balance, String primaryOwner, String secondaryOwner, String secretKey) {
-        this.balance = balance;
-        this.primaryOwner = primaryOwner;
-        this.secondaryOwner = secondaryOwner;
-        creationDate = new Timestamp(System.currentTimeMillis());
-        status = Status.ACTIVE;
-        this.secretKey = secretKey;
-        penaltyFee = new Money(new BigDecimal("40"));
     }
+
+    public Account(Money balance, Owner primaryOwner) {
+        this.balance = balance;
+        this.primaryOwner = primaryOwner;
+    }
+
+    public Account(Money balance) {
+        this.balance = balance;
+    }
+
 }
 
 

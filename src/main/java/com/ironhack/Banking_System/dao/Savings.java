@@ -30,33 +30,62 @@ public class Savings extends Account {
     @Embedded
     private Money monthlyMaintenanceFee;
 
-    public Savings(Money balance, String primaryOwner, String secondaryOwner, String secretKey,
+    public Savings(Money balance, Owner primaryOwner, Owner secondaryOwner,
                    Money monthlyMaintenanceFee) {
-        super(balance, primaryOwner, secondaryOwner, secretKey);
+        super(balance, primaryOwner, secondaryOwner);
         interestRate = new BigDecimal("0.0025");
         minimumBalance = new Money(new BigDecimal("1000"));
         setMonthlyMaintenanceFee(monthlyMaintenanceFee);
     }
 
-    public Savings(Money balance, String primaryOwner, String secondaryOwner, String secretKey,
-                   BigDecimal interestRate, Money monthlyMaintenanceFee) {
-        super(balance, primaryOwner, secondaryOwner, secretKey);
+    public Savings(Money balance, Owner primaryOwner, Owner secondaryOwner, BigDecimal interestRate,
+                   Money monthlyMaintenanceFee) {
+        super(balance, primaryOwner, secondaryOwner);
         setInterestRate(interestRate);
         minimumBalance = new Money(new BigDecimal("1000"));
         setMonthlyMaintenanceFee(monthlyMaintenanceFee);
     }
 
-    public Savings(Money balance, String primaryOwner, String secondaryOwner, String secretKey,
-                   Money minimumBalance, Money monthlyMaintenanceFee) {
-        super(balance, primaryOwner, secondaryOwner, secretKey);
+    public Savings(Money balance, Owner primaryOwner, Owner secondaryOwner, Money minimumBalance,
+                   Money monthlyMaintenanceFee) {
+        super(balance, primaryOwner, secondaryOwner);
         interestRate = new BigDecimal("0.0025");
         setMinimumBalance(minimumBalance);
         setMonthlyMaintenanceFee(monthlyMaintenanceFee);
     }
 
-    public Savings(Money balance, String primaryOwner, String secondaryOwner, String secretKey,
-                   BigDecimal interestRate, Money minimumBalance, Money monthlyMaintenanceFee) {
-        super(balance, primaryOwner, secondaryOwner, secretKey);
+    public Savings(Money balance, Owner primaryOwner, Owner secondaryOwner, BigDecimal interestRate,
+                   Money minimumBalance, Money monthlyMaintenanceFee) {
+        super(balance, primaryOwner, secondaryOwner);
+        setInterestRate(interestRate);
+        setMinimumBalance(minimumBalance);
+        setMonthlyMaintenanceFee(monthlyMaintenanceFee);
+    }
+
+    public Savings(Money balance, Owner primaryOwner, Money monthlyMaintenanceFee) {
+        super(balance, primaryOwner);
+        interestRate = new BigDecimal("0.0025");
+        minimumBalance = new Money(new BigDecimal("1000"));
+        setMonthlyMaintenanceFee(monthlyMaintenanceFee);
+    }
+
+    public Savings(Money balance, Owner primaryOwner, BigDecimal interestRate,Money monthlyMaintenanceFee) {
+        super(balance, primaryOwner);
+        setInterestRate(interestRate);
+        minimumBalance = new Money(new BigDecimal("1000"));
+        setMonthlyMaintenanceFee(monthlyMaintenanceFee);
+    }
+
+    public Savings(Money balance, Owner primaryOwner, Money minimumBalance, Money monthlyMaintenanceFee) {
+        super(balance, primaryOwner);
+        interestRate = new BigDecimal("0.0025");
+        setMinimumBalance(minimumBalance);
+        setMonthlyMaintenanceFee(monthlyMaintenanceFee);
+    }
+
+    public Savings(Money balance, Owner primaryOwner, BigDecimal interestRate, Money minimumBalance,
+                   Money monthlyMaintenanceFee) {
+        super(balance, primaryOwner);
         setInterestRate(interestRate);
         setMinimumBalance(minimumBalance);
         setMonthlyMaintenanceFee(monthlyMaintenanceFee);

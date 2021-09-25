@@ -13,5 +13,5 @@ public interface CreditCardRepository extends JpaRepository<CreditCard, Long> {
 
     @Query(value = "SELECT o.id, o.balance, o.primary_owner, o.status, o.creation_date FROM credit_card o", nativeQuery
             = true)
-    List<Checking.showAccount> findAllIdBalanceName();
+    List<CreditCard> findAllIdBalanceName();
 }

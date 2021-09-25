@@ -7,8 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.math.BigDecimal;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -19,7 +18,7 @@ public class AccountsDTO {
     private String accountType;
     private Long id;
     private Money balance;
-    private String primaryOwner;
-    private Timestamp creationDate;
+    private Owner primaryOwner;
+    private LocalDateTime creationDate;
     private Status status;
 }
