@@ -12,11 +12,13 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+@Entity
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@MappedSuperclass()
+//@MappedSuperclass()
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class Account {
 
     @Id
@@ -30,21 +32,13 @@ public class Account {
     @Embedded
     private Money balance;
 
-    @AttributeOverrides({
-            @AttributeOverride(name = "firstName", column = @Column(name = "primary_first_name")),
-            @AttributeOverride(name = "lastName", column = @Column(name = "primary_last_name")),
-            @AttributeOverride(name = "age", column = @Column(name = "primary_age"))
-    })
-    @Embedded
-    private Owner primaryOwner;
+    @ManyToOne
+    @JoinColumn(name = "primaryOwner_id")
+    private AccountHolder primaryOwner;
 
-    @AttributeOverrides({
-            @AttributeOverride(name = "firstName", column = @Column(name = "secondary_first_name")),
-            @AttributeOverride(name = "lastName", column = @Column(name = "secondary_last_name")),
-            @AttributeOverride(name = "age", column = @Column(name = "secondary_age"))
-    })
-    @Embedded
-    private Owner secondaryOwner;
+    @ManyToOne
+    @JoinColumn(name = "secondaryOwner_id")
+    private AccountHolder secondaryOwner;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime creationDate = LocalDateTime.now();
@@ -66,13 +60,13 @@ public class Account {
     @Embedded
     private Money penaltyFee = new Money(new BigDecimal("40"));
 
-    public Account(Money balance, Owner primaryOwner, Owner secondaryOwner) {
+    public Account(Money balance, AccountHolder primaryOwner, AccountHolder secondaryOwner) {
         this.balance = balance;
         this.primaryOwner = primaryOwner;
         this.secondaryOwner = secondaryOwner;
     }
 
-    public Account(Money balance, Owner primaryOwner) {
+    public Account(Money balance, AccountHolder primaryOwner) {
         this.balance = balance;
         this.primaryOwner = primaryOwner;
     }

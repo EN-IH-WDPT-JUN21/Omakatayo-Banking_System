@@ -1,5 +1,6 @@
 package com.ironhack.Banking_System.dao;
 
+import com.ironhack.Banking_System.enums.AccountType;
 import com.ironhack.Banking_System.enums.Status;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,7 +13,11 @@ import java.sql.Timestamp;
 @Setter
 @Getter
 @NoArgsConstructor
+@PrimaryKeyJoinColumn(name = "id")
 public class Savings extends Account {
+
+    @Enumerated(EnumType.STRING)
+    private AccountType accountType = AccountType.SAVINGS;
 
     private BigDecimal interestRate;
 
@@ -30,7 +35,7 @@ public class Savings extends Account {
     @Embedded
     private Money monthlyMaintenanceFee;
 
-    public Savings(Money balance, Owner primaryOwner, Owner secondaryOwner,
+    public Savings(Money balance, AccountHolder primaryOwner, AccountHolder secondaryOwner,
                    Money monthlyMaintenanceFee) {
         super(balance, primaryOwner, secondaryOwner);
         interestRate = new BigDecimal("0.0025");
@@ -38,7 +43,7 @@ public class Savings extends Account {
         setMonthlyMaintenanceFee(monthlyMaintenanceFee);
     }
 
-    public Savings(Money balance, Owner primaryOwner, Owner secondaryOwner, BigDecimal interestRate,
+    public Savings(Money balance, AccountHolder primaryOwner, AccountHolder secondaryOwner, BigDecimal interestRate,
                    Money monthlyMaintenanceFee) {
         super(balance, primaryOwner, secondaryOwner);
         setInterestRate(interestRate);
@@ -46,7 +51,7 @@ public class Savings extends Account {
         setMonthlyMaintenanceFee(monthlyMaintenanceFee);
     }
 
-    public Savings(Money balance, Owner primaryOwner, Owner secondaryOwner, Money minimumBalance,
+    public Savings(Money balance, AccountHolder primaryOwner, AccountHolder secondaryOwner, Money minimumBalance,
                    Money monthlyMaintenanceFee) {
         super(balance, primaryOwner, secondaryOwner);
         interestRate = new BigDecimal("0.0025");
@@ -54,7 +59,7 @@ public class Savings extends Account {
         setMonthlyMaintenanceFee(monthlyMaintenanceFee);
     }
 
-    public Savings(Money balance, Owner primaryOwner, Owner secondaryOwner, BigDecimal interestRate,
+    public Savings(Money balance, AccountHolder primaryOwner, AccountHolder secondaryOwner, BigDecimal interestRate,
                    Money minimumBalance, Money monthlyMaintenanceFee) {
         super(balance, primaryOwner, secondaryOwner);
         setInterestRate(interestRate);
@@ -62,28 +67,28 @@ public class Savings extends Account {
         setMonthlyMaintenanceFee(monthlyMaintenanceFee);
     }
 
-    public Savings(Money balance, Owner primaryOwner, Money monthlyMaintenanceFee) {
+    public Savings(Money balance, AccountHolder primaryOwner, Money monthlyMaintenanceFee) {
         super(balance, primaryOwner);
         interestRate = new BigDecimal("0.0025");
         minimumBalance = new Money(new BigDecimal("1000"));
         setMonthlyMaintenanceFee(monthlyMaintenanceFee);
     }
 
-    public Savings(Money balance, Owner primaryOwner, BigDecimal interestRate,Money monthlyMaintenanceFee) {
+    public Savings(Money balance, AccountHolder primaryOwner, BigDecimal interestRate,Money monthlyMaintenanceFee) {
         super(balance, primaryOwner);
         setInterestRate(interestRate);
         minimumBalance = new Money(new BigDecimal("1000"));
         setMonthlyMaintenanceFee(monthlyMaintenanceFee);
     }
 
-    public Savings(Money balance, Owner primaryOwner, Money minimumBalance, Money monthlyMaintenanceFee) {
+    public Savings(Money balance, AccountHolder primaryOwner, Money minimumBalance, Money monthlyMaintenanceFee) {
         super(balance, primaryOwner);
         interestRate = new BigDecimal("0.0025");
         setMinimumBalance(minimumBalance);
         setMonthlyMaintenanceFee(monthlyMaintenanceFee);
     }
 
-    public Savings(Money balance, Owner primaryOwner, BigDecimal interestRate, Money minimumBalance,
+    public Savings(Money balance, AccountHolder primaryOwner, BigDecimal interestRate, Money minimumBalance,
                    Money monthlyMaintenanceFee) {
         super(balance, primaryOwner);
         setInterestRate(interestRate);

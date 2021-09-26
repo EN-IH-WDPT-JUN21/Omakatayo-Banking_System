@@ -1,5 +1,6 @@
 package com.ironhack.Banking_System.dao;
 
+import com.ironhack.Banking_System.enums.AccountType;
 import com.ironhack.Banking_System.enums.Status;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,7 +15,11 @@ import java.sql.Timestamp;
 @Setter
 @Getter
 @NoArgsConstructor
+@PrimaryKeyJoinColumn(name = "id")
 public class CreditCard extends Account {
+
+    @Enumerated(EnumType.STRING)
+    private AccountType accountType = AccountType.CREDIT_CARD;
 
     private BigDecimal interestRate;
 
@@ -25,50 +30,50 @@ public class CreditCard extends Account {
     @Embedded
     private Money creditLimit;
 
-    public CreditCard(Money balance, Owner primaryOwner, Owner secondaryOwner) {
+    public CreditCard(Money balance, AccountHolder primaryOwner, AccountHolder secondaryOwner) {
         super(balance, primaryOwner, secondaryOwner);
         interestRate = new BigDecimal("0.2");
         creditLimit = new Money(new BigDecimal("100"));
     }
 
-    public CreditCard(Money balance, Owner primaryOwner, Owner secondaryOwner, Money creditLimit) {
+    public CreditCard(Money balance, AccountHolder primaryOwner, AccountHolder secondaryOwner, Money creditLimit) {
         super(balance, primaryOwner, secondaryOwner);
         interestRate = new BigDecimal("0.2");
         setCreditLimit(creditLimit);
     }
 
-    public CreditCard(Money balance, Owner primaryOwner, Owner secondaryOwner, BigDecimal interestRate) {
+    public CreditCard(Money balance, AccountHolder primaryOwner, AccountHolder secondaryOwner, BigDecimal interestRate) {
         super(balance, primaryOwner, secondaryOwner);
         setInterestRate(interestRate);
         creditLimit = new Money(new BigDecimal("100"));
     }
 
-    public CreditCard(Money balance, Owner primaryOwner, Owner secondaryOwner, BigDecimal interestRate,
+    public CreditCard(Money balance, AccountHolder primaryOwner, AccountHolder secondaryOwner, BigDecimal interestRate,
                       Money creditLimit) {
         super(balance, primaryOwner, secondaryOwner);
         setInterestRate(interestRate);
         setCreditLimit(creditLimit);
     }
 
-    public CreditCard(Money balance, Owner primaryOwner) {
+    public CreditCard(Money balance, AccountHolder primaryOwner) {
         super(balance, primaryOwner);
         interestRate = new BigDecimal("0.2");
         creditLimit = new Money(new BigDecimal("100"));
     }
 
-    public CreditCard(Money balance, Owner primaryOwner, Money creditLimit) {
+    public CreditCard(Money balance, AccountHolder primaryOwner, Money creditLimit) {
         super(balance, primaryOwner);
         interestRate = new BigDecimal("0.2");
         setCreditLimit(creditLimit);
     }
 
-    public CreditCard(Money balance, Owner primaryOwner, BigDecimal interestRate) {
+    public CreditCard(Money balance, AccountHolder primaryOwner, BigDecimal interestRate) {
         super(balance, primaryOwner);
         setInterestRate(interestRate);
         creditLimit = new Money(new BigDecimal("100"));
     }
 
-    public CreditCard(Money balance, Owner primaryOwner, BigDecimal interestRate, Money creditLimit) {
+    public CreditCard(Money balance, AccountHolder primaryOwner, BigDecimal interestRate, Money creditLimit) {
         super(balance, primaryOwner);
         setInterestRate(interestRate);
         setCreditLimit(creditLimit);

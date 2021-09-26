@@ -5,8 +5,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.Optional;
+import java.util.Set;
 
 @Entity
 @Setter
@@ -15,7 +16,7 @@ import java.util.Optional;
 public class AccountHolder extends UserType{
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private LocalDateTime dateOfBirth;
+    private LocalDate dateOfBirth;
 
     @AttributeOverrides({
             @AttributeOverride(name = "streetAddress", column = @Column(name = "primary_street")),
@@ -33,7 +34,13 @@ public class AccountHolder extends UserType{
     @Embedded
     private Address mailingAddress;
 
-    public AccountHolder(String name, String email, LocalDateTime dateOfBirth, Address primaryAddress,
+    @OneToMany(mappedBy = "primaryOwner", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Set<Account> accounts1;
+
+    @OneToMany(mappedBy = "secondaryOwner", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Set<Account> accounts2;
+
+    public AccountHolder(String name, String email, LocalDate dateOfBirth, Address primaryAddress,
                          Address mailingAddress) {
         super(name, email);
         setDateOfBirth(dateOfBirth);
@@ -41,7 +48,4 @@ public class AccountHolder extends UserType{
         setMailingAddress(mailingAddress);
     }
 
-    public Optional setMailingAddress() {
-        return Optional.ofNullable(mailingAddress);
-    }
 }

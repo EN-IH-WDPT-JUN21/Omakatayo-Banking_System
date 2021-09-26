@@ -1,6 +1,7 @@
 package com.ironhack.Banking_System.controller.dto;
 
 import com.ironhack.Banking_System.dao.*;
+import com.ironhack.Banking_System.enums.AccountType;
 import com.ironhack.Banking_System.enums.Status;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,10 +16,10 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class AccountsDTO {
 
-    private String accountType;
+    private AccountType accountType;
     private Long id;
     private Money balance;
-    private Owner primaryOwner;
+    private String primaryOwnerName;
     private LocalDateTime creationDate;
     private Status status;
 }
