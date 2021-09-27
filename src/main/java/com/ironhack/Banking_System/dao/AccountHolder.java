@@ -1,5 +1,7 @@
 package com.ironhack.Banking_System.dao;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,6 +15,7 @@ import java.util.Set;
 @Setter
 @Getter
 @NoArgsConstructor
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "accounts1", "accounts2"})
 public class AccountHolder extends UserType{
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -34,10 +37,10 @@ public class AccountHolder extends UserType{
     @Embedded
     private Address mailingAddress;
 
-    @OneToMany(mappedBy = "primaryOwner", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "primaryOwner", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     private Set<Account> accounts1;
 
-    @OneToMany(mappedBy = "secondaryOwner", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "secondaryOwner", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     private Set<Account> accounts2;
 
     public AccountHolder(String name, String email, LocalDate dateOfBirth, Address primaryAddress,
@@ -48,4 +51,13 @@ public class AccountHolder extends UserType{
         setMailingAddress(mailingAddress);
     }
 
+    public AccountHolder(String name, String email, LocalDate dateOfBirth, Address primaryAddress,
+                         Address mailingAddress, Set<Account> accounts1, Set<Account> accounts2) {
+        super(name, email);
+        this.dateOfBirth = dateOfBirth;
+        this.primaryAddress = primaryAddress;
+        this.mailingAddress = mailingAddress;
+        this.accounts1 = accounts1;
+        this.accounts2 = accounts2;
+    }
 }

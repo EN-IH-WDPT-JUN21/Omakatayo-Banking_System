@@ -1,5 +1,6 @@
 package com.ironhack.Banking_System.dao;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.ironhack.Banking_System.enums.AccountType;
 import com.ironhack.Banking_System.enums.Status;
 import lombok.Getter;

@@ -1,10 +1,7 @@
 package com.ironhack.Banking_System;
 
 import com.ironhack.Banking_System.dao.*;
-import com.ironhack.Banking_System.repository.CheckingRepository;
-import com.ironhack.Banking_System.repository.RoleRepository;
-import com.ironhack.Banking_System.repository.SavingsRepository;
-import com.ironhack.Banking_System.repository.UserRepository;
+import com.ironhack.Banking_System.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -12,6 +9,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Set;
 
 
 @SpringBootApplication
@@ -25,6 +23,8 @@ public class BankingSystemApplication implements CommandLineRunner {
     private UserRepository userRepository;
     @Autowired
     private RoleRepository roleRepository;
+    @Autowired
+    private AccountHolderRepository accountHolderRepository;
 
     public static void main(String[] args) {
 
@@ -33,38 +33,33 @@ public class BankingSystemApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        Checking checking = new Checking(new Money(new BigDecimal("1000")),
-                                         new AccountHolder("Tom Brady",
-                                                           "tom@brady.com",
-                                                           LocalDate.of(1983, 10, 18),
-                                                           new Address("Street", "00-151", "Warsaw"),
-                                                           new Address("Street2", "00-100", "Cracow")));
+
+        AccountHolder accountHolder = new AccountHolder("Tom Brady",
+                                                        "tom@brady.com",
+                                                        LocalDate.of(1983, 10, 18),
+                                                        new Address("Street", "00-151", "Warsaw"),
+                                                        new Address("Street2", "00-100", "Cracow"),
+                                                        null,
+                                                        null);
+        accountHolderRepository.save(accountHolder);
+        AccountHolder accountHolder1 = new AccountHolder("John Lennon",
+                                                         "john@lennon.com",
+                                                         LocalDate.of(2000, 6, 10),
+                                                         new Address("Street", "00-151", "Warsaw"),
+                                                         new Address("Street2", "00-100", "Cracow"),
+                                                null,
+                                                null);
+        accountHolderRepository.save(accountHolder1);
+        var account = accountHolderRepository.findById(accountHolder.getId());
+        var account1 = accountHolderRepository.findById(accountHolder1.getId());
+        Checking checking = new Checking(new Money(new BigDecimal("1000")), account.get());
         checkingRepository.save(checking);
 
-        Checking checking2 = new Checking(new Money(new BigDecimal("1000")),
-                                          new AccountHolder("Tom Brady",
-                                                            "tom@brady.com",
-                                                            LocalDate.of(1983, 10, 31),
-                                                            new Address("Street", "00-151", "Warsaw"),
-                                                            new Address("Street2", "00-100", "Cracow")),
-                                          new AccountHolder("John Lennon",
-                                                            "john@lennon.com",
-                                                            LocalDate.of(2000, 6, 10),
-                                                            new Address("Street", "00-151", "Warsaw"),
-                                                            new Address("Street2", "00-100", "Cracow")));
+        Checking checking2 = new Checking(new Money(new BigDecimal("1000")), account1.get(), account.get());
         checkingRepository.save(checking2);
 
         Savings savings = new Savings(new Money(new BigDecimal("1000")),
-                                      new AccountHolder("Tom Brady",
-                                                        "tom@brady.com",
-                                                        LocalDate.of(1973, 1, 3),
-                                                        new Address("Street", "00-151", "Warsaw"),
-                                                        new Address("Street2", "00-100", "Cracow")),
-                                      new AccountHolder("John Lennon",
-                                                        "john@lennon.com",
-                                                        LocalDate.of(2002, 11, 20),
-                                                        new Address("Street", "00-151", "Warsaw"),
-                                                        new Address("Street2", "00-100", "Cracow")),
+                                      account.get(), account1.get(),
                                       new BigDecimal("0.4"),
                                       new Money(new BigDecimal("500")),
                                       new Money(new BigDecimal("100")));

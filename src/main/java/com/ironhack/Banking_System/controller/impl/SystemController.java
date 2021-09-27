@@ -1,7 +1,6 @@
 package com.ironhack.Banking_System.controller.impl;
 
-import com.ironhack.Banking_System.controller.dto.AccountTypeDTO;
-import com.ironhack.Banking_System.controller.dto.AccountsDTO;
+import com.ironhack.Banking_System.controller.dto.AllAccountListDTO;
 import com.ironhack.Banking_System.controller.interfaces.ISystemController;
 import com.ironhack.Banking_System.dao.Checking;
 import com.ironhack.Banking_System.dao.CreditCard;
@@ -11,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.*;
 
 @RestController
@@ -28,29 +26,29 @@ public class SystemController implements ISystemController {
 
     @GetMapping("/accounts")
     @ResponseStatus(HttpStatus.OK)
-    public List<AccountsDTO> getAllAccounts() {
-        List<AccountsDTO> accountList = new ArrayList<>();
+    public List<AllAccountListDTO> getAllAccounts() {
+        List<AllAccountListDTO> allAccountList = new ArrayList<>();
         for (Checking checking : checkingRepository.findAll()) {
-            AccountsDTO accountsDTO = new AccountsDTO(checking.getAccountType(), checking.getId(),
-                                                      checking.getBalance(),
-                                                      checking.getPrimaryOwner().getName(), checking.getCreationDate(),
-                                                      checking.getStatus());
-            accountList.add(accountsDTO);
+            AllAccountListDTO allAccountListDTO = new AllAccountListDTO(checking.getAccountType(), checking.getId(),
+                                                                        checking.getBalance(),
+                                                                        checking.getPrimaryOwner().getName(), checking.getCreationDate(),
+                                                                        checking.getStatus());
+            allAccountList.add(allAccountListDTO);
         }
         for (CreditCard creditCard : creditCardRepository.findAll()) {
-            AccountsDTO accountsDTO = new AccountsDTO(creditCard.getAccountType(), creditCard.getId(),
-                                                      creditCard.getBalance(),
-                                                      creditCard.getPrimaryOwner().getName(), creditCard.getCreationDate(),
-                                                      creditCard.getStatus());
-            accountList.add(accountsDTO);
+            AllAccountListDTO allAccountListDTO = new AllAccountListDTO(creditCard.getAccountType(), creditCard.getId(),
+                                                                        creditCard.getBalance(),
+                                                                        creditCard.getPrimaryOwner().getName(), creditCard.getCreationDate(),
+                                                                        creditCard.getStatus());
+            allAccountList.add(allAccountListDTO);
         }
         for (Savings savings : savingsRepository.findAll()) {
-            AccountsDTO accountsDTO = new AccountsDTO(savings.getAccountType(), savings.getId(),
-                                                      savings.getBalance(),
-                                                      savings.getPrimaryOwner().getName(), savings.getCreationDate(),
-                                                      savings.getStatus());
-            accountList.add(accountsDTO);
+            AllAccountListDTO allAccountListDTO = new AllAccountListDTO(savings.getAccountType(), savings.getId(),
+                                                                        savings.getBalance(),
+                                                                        savings.getPrimaryOwner().getName(), savings.getCreationDate(),
+                                                                        savings.getStatus());
+            allAccountList.add(allAccountListDTO);
         }
-        return accountList;
+        return allAccountList;
     }
 }

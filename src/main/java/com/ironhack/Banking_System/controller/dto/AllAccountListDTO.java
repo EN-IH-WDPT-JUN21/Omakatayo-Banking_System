@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class AccountsDTO {
+public class AllAccountListDTO {
 
     private AccountType accountType;
     private Long id;

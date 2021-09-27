@@ -1,5 +1,7 @@
 package com.ironhack.Banking_System.dao;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.ironhack.Banking_System.enums.Status;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,7 +19,6 @@ import java.util.UUID;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-//@MappedSuperclass()
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class Account {
 
