@@ -15,6 +15,7 @@ import java.util.Set;
 @Setter
 @Getter
 @NoArgsConstructor
+@PrimaryKeyJoinColumn(name = "id")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "accounts1", "accounts2"})
 public class AccountHolder extends UserType{
 

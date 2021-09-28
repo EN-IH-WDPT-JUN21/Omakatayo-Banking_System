@@ -7,11 +7,12 @@ import lombok.Setter;
 
 import javax.persistence.*;
 
+@Entity
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@MappedSuperclass()
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class UserType {
 
     @Id

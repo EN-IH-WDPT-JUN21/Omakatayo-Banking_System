@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.lang.Nullable;
 
 import java.time.LocalDateTime;
 
@@ -18,6 +19,8 @@ public class UserAccountListDTO {
 
     private AccountType accountType;
     private Long id;
+    private String primaryOwnerName;
+    private String secondaryOwnerName;
     private Money balance;
     private LocalDateTime creationDate;
     private Status status;
