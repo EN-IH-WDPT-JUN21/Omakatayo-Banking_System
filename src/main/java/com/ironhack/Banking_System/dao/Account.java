@@ -15,6 +15,7 @@ import org.springframework.security.core.annotation.CurrentSecurityContext;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -70,6 +71,18 @@ public class Account {
     @Embedded
     private Money penaltyFee = new Money(new BigDecimal("40"));
 
+    @AttributeOverrides({
+            @AttributeOverride(name = "amount", column = @Column(name = "minimum_balance")),
+            @AttributeOverride(name = "currency", column = @Column(name = "minimum_balance_currency"))
+    })
+    @Embedded
+    private Money minimumBalance;
+
+    private BigDecimal interestRate;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDate interestRateDate = null;
+
     public Account(Money balance, AccountHolder primaryOwner, AccountHolder secondaryOwner) {
         this.balance = balance;
         setUserLogin(userLogin);
@@ -97,6 +110,8 @@ public class Account {
             this.userLogin = null;
         }
     }
+
+
 }
 
 

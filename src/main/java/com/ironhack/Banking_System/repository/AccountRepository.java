@@ -1,6 +1,7 @@
 package com.ironhack.Banking_System.repository;
 
 import com.ironhack.Banking_System.dao.Account;
+import com.ironhack.Banking_System.dao.Checking;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -16,9 +17,6 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
 
     Optional<Account> findByIdAndSecretKey(Long id, String secretKey);
 
-    /*@Query("SELECT id, balance, primary_owner, status, creation_date FROM Checking")
-    Optional<Account> findByIdAndPrimaryOwner(Long id, String primaryOwnerName);*/
+    List<Account> findByUserLogin(String userLogin);
 
-    /*@Query("SELECT a.account FROM Account a WHERE a.id = :id AND a.")
-    Optional<Account> findByIdAndSecondaryOwner (Long id, String secondaryOwnerName);*/
 }

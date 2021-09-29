@@ -8,6 +8,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.validation.constraints.Digits;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Getter
@@ -22,4 +24,6 @@ public class AllAccountListDTO {
     private String primaryOwnerName;
     private LocalDateTime creationDate;
     private Status status;
+    private Money minimumBalance;
+    private BigDecimal interestRate;
 }

@@ -12,6 +12,8 @@ import org.springframework.security.core.annotation.CurrentSecurityContext;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.Objects;
@@ -72,7 +74,7 @@ public class AdminController {
     @PostMapping("/new/third_party")
     @ResponseStatus(HttpStatus.OK)
     public ThirdParty create(@RequestBody ThirdParty thirdParty) {
-        thirdParty.setHashedKey(Objects.hash(thirdParty.getId(), thirdParty.getName(), thirdParty.getEmail()));
+        thirdParty.setHashedKey(Objects.hash(thirdParty.getName(), thirdParty.getEmail()));
         return thirdPartyRepository.save(thirdParty);
     }
 
@@ -106,10 +108,24 @@ public class AdminController {
     @ResponseStatus(HttpStatus.CREATED)
     public Savings newSavings(@RequestBody Savings savings, @CurrentSecurityContext(expression="authentication")
             Authentication authentication) {
-        savings.setMonthlyMaintenanceFee(new Money(new BigDecimal("0")));
+        //savings.setMonthlyMaintenanceFee(new Money(new BigDecimal("0")));
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
             savings.setUserLogin(authentication.getName());
         }
+        savings.setInterestRate(new BigDecimal("0.0025"));
+
+        setMinimumBalance(savings);
         return savingsRepository.save(savings);
+    }
+
+
+    private void setMinimumBalance(Savings savings) {
+        Money minimumBalance = savings.getMinimumBalance();
+        if (minimumBalance == null) {
+            savings.setMinimumBalance(new Money(new BigDecimal("1000")));
+        }
+        else if (minimumBalance.getAmount().compareTo(new BigDecimal("100")) < 0) {
+            savings.setMinimumBalance(new Money(new BigDecimal("100")));
+        }
     }
 }

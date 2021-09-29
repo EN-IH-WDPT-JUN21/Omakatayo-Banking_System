@@ -28,72 +28,46 @@ public class Savings extends Account {
     @Embedded
     private Money minimumBalance;
 
-    @AttributeOverrides({
-            @AttributeOverride(name = "amount", column = @Column(name = "monthly_maintenance_fee")),
-            @AttributeOverride(name = "currency", column = @Column(name = "monthly_maintenance_fee_currency"))
-    })
-    @Embedded
-    private Money monthlyMaintenanceFee;
-
-    public Savings(Money balance, AccountHolder primaryOwner, AccountHolder secondaryOwner,
-                   Money monthlyMaintenanceFee) {
+    public Savings(Money balance, AccountHolder primaryOwner, AccountHolder secondaryOwner) {
         super(balance, primaryOwner, secondaryOwner);
         interestRate = new BigDecimal("0.0025");
         minimumBalance = new Money(new BigDecimal("1000"));
-        setMonthlyMaintenanceFee(monthlyMaintenanceFee);
     }
 
-    public Savings(Money balance, AccountHolder primaryOwner, AccountHolder secondaryOwner, BigDecimal interestRate,
-                   Money monthlyMaintenanceFee) {
+    public Savings(Money balance, AccountHolder primaryOwner, AccountHolder secondaryOwner, BigDecimal interestRate) {
         super(balance, primaryOwner, secondaryOwner);
         setInterestRate(interestRate);
         minimumBalance = new Money(new BigDecimal("1000"));
-        setMonthlyMaintenanceFee(monthlyMaintenanceFee);
     }
 
-    public Savings(Money balance, AccountHolder primaryOwner, AccountHolder secondaryOwner, Money minimumBalance,
-                   Money monthlyMaintenanceFee) {
+    public Savings(Money balance, AccountHolder primaryOwner, AccountHolder secondaryOwner, Money minimumBalance) {
         super(balance, primaryOwner, secondaryOwner);
         interestRate = new BigDecimal("0.0025");
         setMinimumBalance(minimumBalance);
-        setMonthlyMaintenanceFee(monthlyMaintenanceFee);
     }
 
-    public Savings(Money balance, AccountHolder primaryOwner, AccountHolder secondaryOwner, BigDecimal interestRate,
-                   Money minimumBalance, Money monthlyMaintenanceFee) {
-        super(balance, primaryOwner, secondaryOwner);
-        setInterestRate(interestRate);
-        setMinimumBalance(minimumBalance);
-        setMonthlyMaintenanceFee(monthlyMaintenanceFee);
-    }
-
-    public Savings(Money balance, AccountHolder primaryOwner, Money monthlyMaintenanceFee) {
+    public Savings(Money balance, AccountHolder primaryOwner) {
         super(balance, primaryOwner);
         interestRate = new BigDecimal("0.0025");
         minimumBalance = new Money(new BigDecimal("1000"));
-        setMonthlyMaintenanceFee(monthlyMaintenanceFee);
     }
 
-    public Savings(Money balance, AccountHolder primaryOwner, BigDecimal interestRate,Money monthlyMaintenanceFee) {
+    public Savings(Money balance, AccountHolder primaryOwner, BigDecimal interestRate) {
         super(balance, primaryOwner);
         setInterestRate(interestRate);
         minimumBalance = new Money(new BigDecimal("1000"));
-        setMonthlyMaintenanceFee(monthlyMaintenanceFee);
     }
 
-    public Savings(Money balance, AccountHolder primaryOwner, Money minimumBalance, Money monthlyMaintenanceFee) {
+    public Savings(Money balance, AccountHolder primaryOwner, Money minimumBalance) {
         super(balance, primaryOwner);
         interestRate = new BigDecimal("0.0025");
         setMinimumBalance(minimumBalance);
-        setMonthlyMaintenanceFee(monthlyMaintenanceFee);
     }
 
-    public Savings(Money balance, AccountHolder primaryOwner, BigDecimal interestRate, Money minimumBalance,
-                   Money monthlyMaintenanceFee) {
+    public Savings(Money balance, AccountHolder primaryOwner, BigDecimal interestRate, Money minimumBalance) {
         super(balance, primaryOwner);
         setInterestRate(interestRate);
         setMinimumBalance(minimumBalance);
-        setMonthlyMaintenanceFee(monthlyMaintenanceFee);
     }
 
     public void setInterestRate(BigDecimal interestRate) {

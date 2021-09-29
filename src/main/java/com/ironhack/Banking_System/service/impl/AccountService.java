@@ -3,6 +3,7 @@ package com.ironhack.Banking_System.service.impl;
 import com.ironhack.Banking_System.dao.Account;
 import com.ironhack.Banking_System.dao.Money;
 import com.ironhack.Banking_System.repository.AccountRepository;
+import com.ironhack.Banking_System.repository.CheckingRepository;
 import com.ironhack.Banking_System.service.interfaces.IAccountService;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,8 @@ public class AccountService implements IAccountService {
 
     @Autowired
     private AccountRepository accountRepository;
+    @Autowired
+    private CheckingRepository checkingRepository;
 
     public void accountHolderTransferPrimaryOwnerName(Long userAccountId,
                                                       Long transferAccountId,
@@ -34,6 +37,13 @@ public class AccountService implements IAccountService {
 
         storedUserAccount.setBalance(new Money(storedUserAccount.getBalance().decreaseAmount(transferAmount)));
         accountRepository.save(storedUserAccount);
+
+        /*if (checkingRepository.findById(userAccountId).get().getBalance().getAmount()
+                .compareTo(checkingRepository.findById(userAccountId).get().getMinimumBalance().getAmount()) < 0) {
+            checkingRepository.save(checkingRepository.findById(userAccountId).get().getBalance().decreaseAmount(checkingRepository.findById(userAccountId).get().getPenaltyFee().getAmount()));
+        }*/
+
+
 
     }
 
