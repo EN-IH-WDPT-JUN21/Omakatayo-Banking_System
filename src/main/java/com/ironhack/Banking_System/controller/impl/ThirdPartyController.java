@@ -36,7 +36,7 @@ public class ThirdPartyController {
     }
 
 
-    @GetMapping("/show/account_holder")
+    @GetMapping("/show/third_party")
     @ResponseStatus(HttpStatus.OK)
     public List<AllThirdPartyDTO> getAllThirdParty() {
         List<AllThirdPartyDTO> allThirdPartyDTOList = new ArrayList<>();

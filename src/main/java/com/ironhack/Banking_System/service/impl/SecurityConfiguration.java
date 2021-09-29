@@ -41,14 +41,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.httpBasic();
         http.csrf().disable();
         http.authorizeRequests()
-
             .antMatchers("/", "index", "/css/*", "/js/*").permitAll()
-            .mvcMatchers(HttpMethod.GET, "/api/v1/*").hasRole("ADMIN")
-            .mvcMatchers(HttpMethod.GET, "/api/v1/accounts").hasAnyRole("ACCOUNT_HOLDER", "THIRD_PARTY")
-            .mvcMatchers(HttpMethod.POST, "/api/v1/new/*").hasAnyRole("ACCOUNT_HOLDER", "THIRD_PARTY")
+            .mvcMatchers(HttpMethod.GET, "/api/v1/show/*").hasRole("ADMIN")
+            .mvcMatchers(HttpMethod.GET, "/api/v1/accounts").hasAnyRole("ADMIN", "ACCOUNT_HOLDER", "THIRD_PARTY")
+            .mvcMatchers(HttpMethod.POST, "/api/v1/new/*").hasAnyRole("ADMIN", "ACCOUNT_HOLDER", "THIRD_PARTY")
             .mvcMatchers(HttpMethod.PATCH, "/api/v1/account_holder/transfer").hasRole("ACCOUNT_HOLDER")
-            .mvcMatchers(HttpMethod.PATCH, "/api/v1/third_party/transfer").hasRole("ACCOUNT_HOLDER")
+            .mvcMatchers(HttpMethod.PATCH, "/api/v1/third_party/transfer").hasRole("THIRD_PARTY")
             .anyRequest().authenticated();
-        //.and()
     }
 }
