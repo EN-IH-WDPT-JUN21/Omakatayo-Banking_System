@@ -1,5 +1,9 @@
 package com.ironhack.Banking_System.controller.impl;
 
+import com.ironhack.Banking_System.controller.dto.AllAccountHoldersDTO;
+import com.ironhack.Banking_System.controller.dto.AllThirdPartyDTO;
+import com.ironhack.Banking_System.dao.AccountHolder;
+import com.ironhack.Banking_System.dao.ThirdParty;
 import com.ironhack.Banking_System.enums.AccountType;
 import com.ironhack.Banking_System.repository.AccountRepository;
 import com.ironhack.Banking_System.repository.ThirdPartyRepository;
@@ -8,6 +12,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @RestController
@@ -19,7 +26,33 @@ public class ThirdPartyController {
     @Autowired
     private AccountRepository accountRepository;
 
-    /*@PatchMapping("/third_party/transfer")
+
+    // Mapping to create new ThirdParty user
+    @PostMapping("/new/third_party")
+    @ResponseStatus(HttpStatus.CREATED)
+    public ThirdParty newThirdParty(@RequestBody ThirdParty thirdParty) {
+        thirdParty.setHashedKey(Objects.hash(thirdParty.getName(), thirdParty.getEmail()));
+        return thirdPartyRepository.save(thirdParty);
+    }
+
+
+    @GetMapping("/show/account_holder")
+    @ResponseStatus(HttpStatus.OK)
+    public List<AllThirdPartyDTO> getAllThirdParty() {
+        List<AllThirdPartyDTO> allThirdPartyDTOList = new ArrayList<>();
+        for (ThirdParty thirdParty : thirdPartyRepository.findAll()) {
+            AllThirdPartyDTO allThirdPartyDTO = new AllThirdPartyDTO(thirdParty.getId(),
+                                                                     thirdParty.getName(),
+                                                                     thirdParty.getEmail(),
+                                                                     thirdParty.getHashedKey());
+            allThirdPartyDTOList.add(allThirdPartyDTO);
+        }
+        return allThirdPartyDTOList;
+    }
+
+
+    /*@PatchMapping(
+    "/third_party/transfer")
     @ResponseStatus(HttpStatus.OK)
     private String thirdPartyTransfer(@RequestHeader(value = "hashed-key") int hashedKey,
                                       @RequestParam Long userAccountId,

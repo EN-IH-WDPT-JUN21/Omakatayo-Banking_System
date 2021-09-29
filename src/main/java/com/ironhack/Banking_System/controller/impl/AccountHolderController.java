@@ -1,6 +1,6 @@
 package com.ironhack.Banking_System.controller.impl;
 
-import com.ironhack.Banking_System.controller.dto.UserAccountListDTO;
+import com.ironhack.Banking_System.controller.dto.AllAccountHoldersDTO;
 import com.ironhack.Banking_System.dao.*;
 import com.ironhack.Banking_System.repository.*;
 import com.ironhack.Banking_System.service.interfaces.IAccountService;
@@ -34,20 +34,35 @@ public class AccountHolderController {
     private UserTypeRepository userTypeRepository;
 
 
-    @GetMapping("/account_holders")
-    @ResponseStatus(HttpStatus.OK)
-    public List<AccountHolder> getAccountHolder() {
-        return accountHolderRepository.findAll();
+    // Mapping to create new AccountHolder user
+    @PostMapping("/new/account_holder")
+    @ResponseStatus(HttpStatus.CREATED)
+    public AccountHolder newAccountHolder(@RequestBody AccountHolder accountHolder) {
+        return accountHolderRepository.save(accountHolder);
     }
 
-    @GetMapping("/account_holders/{id}")
+
+    @GetMapping("/show/account_holder")
+    @ResponseStatus(HttpStatus.OK)
+    public List<AllAccountHoldersDTO> getAllAccountHolders() {
+        List<AllAccountHoldersDTO> allAccountHoldersDTOList = new ArrayList<>();
+        for (AccountHolder accountHolder : accountHolderRepository.findAll()) {
+            AllAccountHoldersDTO allAccountHoldersDTO = new AllAccountHoldersDTO(accountHolder.getId(),
+                                                                                 accountHolder.getName(),
+                                                                                 accountHolder.getEmail());
+            allAccountHoldersDTOList.add(allAccountHoldersDTO);
+        }
+        return allAccountHoldersDTOList;
+    }
+
+    @GetMapping("/show/account_holder/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Optional<AccountHolder> getById(@PathVariable(name = "id") Long id) {
         return accountHolderRepository.findById(id);
     }
 
 
-    @PatchMapping("/account_holders/transfer")
+    @PatchMapping("/account_holder/transfer")
     @ResponseStatus(HttpStatus.OK)
     public String accountHolderTransfer(@RequestParam Long userAccountId, @RequestParam Long transferAccountId,
                                         @RequestParam Optional<Long> primaryOwnerId,
@@ -109,6 +124,7 @@ public class AccountHolderController {
         return "Jupiii :). Money have been transferred!";
     }
 
+
     private void transferMoneyPrimaryOwner(Long userAccountId,
                                            Long transferAccountId,
                                            Optional<Long> primaryOwnerId,
@@ -119,6 +135,7 @@ public class AccountHolderController {
                                                              transferAmount);
     }
 
+
     private void transferMoneySecondaryOwner(Long userAccountId,
                                              Long transferAccountId,
                                              Optional<Long> secondaryOwnerId,
@@ -128,6 +145,7 @@ public class AccountHolderController {
                                                              secondaryOwnerId,
                                                              transferAmount);
     }
+
 
     private void applyPenaltyFee(Optional<Account> userAccount, BigDecimal currentBalance) {
 
