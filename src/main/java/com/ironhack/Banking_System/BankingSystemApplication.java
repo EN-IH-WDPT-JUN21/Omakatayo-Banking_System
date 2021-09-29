@@ -34,11 +34,12 @@ public class BankingSystemApplication implements CommandLineRunner {
     @Override
     public void run(String... args) {
 
-        AccountHolder accountHolder = new AccountHolder("Tom Brady",
+        /*AccountHolder accountHolder = new AccountHolder("Tom Brady",
                                                         "tom@brady.com",
                                                         LocalDate.of(1983, 10, 18),
                                                         new Address("Street", "00-151", "Warsaw"),
                                                         new Address("Street2", "00-100", "Cracow"),
+                                                        "TomB",
                                                         null,
                                                         null);
         accountHolderRepository.save(accountHolder);
@@ -47,6 +48,7 @@ public class BankingSystemApplication implements CommandLineRunner {
                                                          LocalDate.of(2000, 6, 10),
                                                          new Address("Street", "00-151", "Warsaw"),
                                                          new Address("Street2", "00-100", "Cracow"),
+                                                "JohnL",
                                                 null,
                                                 null);
         accountHolderRepository.save(accountHolder1);
@@ -63,7 +65,7 @@ public class BankingSystemApplication implements CommandLineRunner {
                                       new BigDecimal("0.4"),
                                       new Money(new BigDecimal("500")),
                                       new Money(new BigDecimal("100")));
-        savingsRepository.save(savings);
+        savingsRepository.save(savings);*/
 
         User userAdmin = new User("admin", "$2a$10$MSzkrmfd5ZTipY0XkuCbAejBC9g74MAg2wrkeu8/m1wQGXDihaX3e", null);
         userRepository.save(userAdmin);

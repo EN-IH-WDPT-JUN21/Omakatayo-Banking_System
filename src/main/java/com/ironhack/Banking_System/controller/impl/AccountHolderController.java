@@ -2,11 +2,15 @@ package com.ironhack.Banking_System.controller.impl;
 
 import com.ironhack.Banking_System.controller.dto.UserAccountListDTO;
 import com.ironhack.Banking_System.dao.*;
+import com.ironhack.Banking_System.enums.AccountType;
 import com.ironhack.Banking_System.repository.*;
 import com.ironhack.Banking_System.service.interfaces.IAccountService;
+import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.CurrentSecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
@@ -105,21 +109,45 @@ public class AccountHolderController {
         return userAccountListDTOS; // optionalCourse.isPresent() ? optionalCourse.get() : // null;
     }
 
-    @PostMapping("/account_holders/new")
-    @ResponseStatus(HttpStatus.CREATED)
-    public AccountHolder newAccountHolder(@RequestBody AccountHolder accountHolder) {
-        return accountHolderRepository.save(accountHolder);
-    }
-
     @PatchMapping("/account_holders/transfer")
     @ResponseStatus(HttpStatus.OK)
-    public String accountHolderTransfer(@RequestParam Long id,
-                                      /*@RequestParam Optional<String> primaryOwnerName,
-                                      @RequestParam Optional<String> secondaryOwnerName,*/
+    public String accountHolderTransfer(@RequestParam Long userAccountId, @RequestParam Long transferAccountId,
+                                      @RequestParam Optional<Long> primaryOwnerId,
+                                      @RequestParam Optional<Long> secondaryOwnerId,
                                       @RequestParam BigDecimal transferAmount) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String currentPrincipalName = authentication.getName();
-            accountService.accountHolderTransferSecondaryOwnerName(id, transferAmount);
-        return "Jupi :). Money have been transferred! User ID: " + currentPrincipalName;
+        if (primaryOwnerId.isPresent() && secondaryOwnerId.isEmpty()) {
+            if (accountRepository.findByIdAndPrimaryOwnerId(transferAccountId, primaryOwnerId).isPresent()) {
+                if (transferAmount.compareTo(accountRepository.findById(userAccountId).get().getBalance().getAmount()) <= 0) {
+                    accountService.accountHolderTransferPrimaryOwnerName(userAccountId, transferAccountId, primaryOwnerId,
+                                                                         transferAmount);
+                    if (accountRepository.findById(userAccountId).get().getAccountType().equals(AccountType.CHECKING)) {
+                        if (checkingRepository.findById(userAccountId).get().getBalance().getAmount().compareTo(checkingRepository.findById(userAccountId).get().getMinimumBalance().getAmount()) < 0) {
+                            checkingRepository.findById(userAccountId).get().getBalance().decreaseAmount(transferAmount);
+                        }
+                    }
+                } else {
+                    return "Not enough founds on your account!!!";
+                }
+            }
+            else {
+                return "User account or transfer account not found!!!";
+            }
+
+        }
+        else if (primaryOwnerId.isEmpty() && secondaryOwnerId.isPresent()) {
+            if (accountRepository.findByIdAndSecondaryOwnerId(transferAccountId, secondaryOwnerId).isPresent()) {
+                if (transferAmount.compareTo(accountRepository.findById(userAccountId).get().getBalance().getAmount()) <= 0) {
+                    accountService.accountHolderTransferSecondaryOwnerName(userAccountId, transferAccountId, secondaryOwnerId,
+                                                                           transferAmount);
+                } else {
+                    return "Not enough founds on your account!!!";
+                }
+            }
+            else {
+                return "User account or transfer account not found!!!";
+            }
+        }
+        return "Jupiii :). Money have been transferred!";
     }
+
 }

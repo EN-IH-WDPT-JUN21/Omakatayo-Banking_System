@@ -16,5 +16,7 @@ public interface CheckingRepository extends JpaRepository<Checking, Long> {
     @Query(value = "SELECT id, balance, primary_owner, status, creation_date FROM Checking", nativeQuery =
             true)
     List<Checking> findAllIdBalanceName();
+
+    List<Checking> findByUserLogin(String userLogin);
 }
 

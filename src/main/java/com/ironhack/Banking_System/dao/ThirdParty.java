@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import javax.persistence.Entity;
 import javax.persistence.PrimaryKeyJoinColumn;
+import java.util.Objects;
 
 @Entity
 @Setter
@@ -13,10 +14,16 @@ import javax.persistence.PrimaryKeyJoinColumn;
 @PrimaryKeyJoinColumn(name = "id")
 public class ThirdParty extends UserType{
 
-    private String hashedKey;
+    private int hashedKey;
 
-    public ThirdParty(String name, String email, String hashedKey) {
+    public ThirdParty(String name, String email) {
         super(name, email);
         setHashedKey(hashedKey);
     }
+
+    public void setHashedKey(int hashedKey) {
+        this.hashedKey = Objects.hash(getId(), getName(), getEmail());
+    }
+
+
 }

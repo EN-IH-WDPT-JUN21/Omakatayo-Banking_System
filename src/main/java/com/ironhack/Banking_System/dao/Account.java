@@ -2,12 +2,16 @@ package com.ironhack.Banking_System.dao;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.ironhack.Banking_System.enums.AccountType;
 import com.ironhack.Banking_System.enums.Status;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.CurrentSecurityContext;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -26,6 +30,11 @@ public class Account {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Enumerated(EnumType.STRING)
+    private AccountType accountType;
+
+    private String userLogin;
+
     @AttributeOverrides({
             @AttributeOverride(name = "amount", column = @Column(name = "balance")),
             @AttributeOverride(name = "currency", column = @Column(name = "balance_currency"))
@@ -33,11 +42,11 @@ public class Account {
     @Embedded
     private Money balance;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "primaryOwner_id")
     private AccountHolder primaryOwner;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "secondaryOwner_id")
     private AccountHolder secondaryOwner;
 
@@ -63,12 +72,14 @@ public class Account {
 
     public Account(Money balance, AccountHolder primaryOwner, AccountHolder secondaryOwner) {
         this.balance = balance;
+        setUserLogin(userLogin);
         this.primaryOwner = primaryOwner;
         this.secondaryOwner = secondaryOwner;
     }
 
     public Account(Money balance, AccountHolder primaryOwner) {
         this.balance = balance;
+        setUserLogin(userLogin);
         this.primaryOwner = primaryOwner;
     }
 
@@ -76,6 +87,17 @@ public class Account {
         this.balance = balance;
     }
 
+    public void setUserLogin(String userLogin, @CurrentSecurityContext(expression="authentication")
+            Authentication authentication) {
+        //Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (!(authentication instanceof AnonymousAuthenticationToken)) {
+            this.userLogin = authentication.getName();
+        }
+        else {
+            this.userLogin = null;
+        }
+    }
 }
+
 
 
