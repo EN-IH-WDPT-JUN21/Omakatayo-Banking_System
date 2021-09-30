@@ -12,6 +12,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.CurrentSecurityContext;
 
 import javax.persistence.*;
+import javax.validation.constraints.Positive;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -76,6 +77,8 @@ public class Account {
     @Embedded
     private Money minimumBalance;
 
+    @Column(columnDefinition = "DECIMAL(4,4)")
+    @Positive
     private BigDecimal interestRate;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")

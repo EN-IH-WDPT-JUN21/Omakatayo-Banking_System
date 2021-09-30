@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import javax.persistence.*;
+import javax.validation.constraints.Positive;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 
@@ -19,6 +20,8 @@ public class Savings extends Account {
     @Enumerated(EnumType.STRING)
     private AccountType accountType = AccountType.SAVINGS;
 
+    @Column(columnDefinition = "DECIMAL(4,4)")
+    @Positive
     private BigDecimal interestRate;
 
     @AttributeOverrides({

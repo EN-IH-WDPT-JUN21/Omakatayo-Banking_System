@@ -78,6 +78,8 @@ public class AccountController {
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
             creditCard.setUserLogin(authentication.getName());
         }
+        setCreditLimit(creditCard);
+        setInterestRate(creditCard);
         return creditCardRepository.save(creditCard);
     }
 
@@ -116,6 +118,28 @@ public class AccountController {
         }
         else if (minimumBalance.getAmount().compareTo(new BigDecimal("100")) < 0) {
             savings.setMinimumBalance(new Money(new BigDecimal("100")));    // Setting the lowest possible value
+        }
+    }
+
+
+    private void setInterestRate(CreditCard creditCard) {
+        BigDecimal interestRate = creditCard.getInterestRate();
+        if (interestRate == null) {
+            creditCard.setInterestRate(new BigDecimal("0.2"));  // Setting default value to interestRate
+        }
+        else if (interestRate.compareTo(new BigDecimal("0.1")) < 0) {
+            creditCard.setMinimumBalance(new Money(new BigDecimal("0.1"))); // Setting the lowest possible value
+        }
+    }
+
+
+    private void setCreditLimit(CreditCard creditCard) {
+        Money creditLimit = creditCard.getCreditLimit();
+        if (creditLimit == null) {
+            creditCard.setCreditLimit(new Money(new BigDecimal("100")));  // Setting default value to interestRate
+        }
+        else if (creditLimit.getAmount().compareTo(new BigDecimal("100000")) > 0) {
+            creditCard.setMinimumBalance(new Money(new BigDecimal("100000"))); // Setting the highest possible value
         }
     }
 }
