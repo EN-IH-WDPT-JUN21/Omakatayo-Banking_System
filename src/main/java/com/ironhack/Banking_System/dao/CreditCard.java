@@ -1,8 +1,6 @@
 package com.ironhack.Banking_System.dao;
 
 import com.ironhack.Banking_System.enums.AccountType;
-import com.ironhack.Banking_System.enums.Status;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,7 +8,6 @@ import lombok.Setter;
 import javax.persistence.*;
 import javax.validation.constraints.Positive;
 import java.math.BigDecimal;
-import java.sql.Timestamp;
 
 @Entity
 @Setter
@@ -82,6 +79,7 @@ public class CreditCard extends Account {
         setCreditLimit(creditLimit);
     }
 
+    // Method to set default value for interestRate
     public void setInterestRate(BigDecimal interestRate) {
         if (interestRate.compareTo(new BigDecimal("0.1")) >= 0) {
             this.interestRate = interestRate;
@@ -93,6 +91,7 @@ public class CreditCard extends Account {
         }
     }
 
+    // Method to set default value for creditLimit
     public void setCreditLimit(Money creditLimit) {
         if (creditLimit.getAmount().compareTo(new BigDecimal("100000")) <= 0) {
             this.creditLimit = creditLimit;

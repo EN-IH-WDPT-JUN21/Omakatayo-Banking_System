@@ -29,12 +29,13 @@ public class AccountController {
     @Autowired
     private SavingsRepository savingsRepository;
 
-
+    // Mapping to show accounts created by User
     @GetMapping("/accounts")
     @ResponseStatus(HttpStatus.OK)
     public List<AllAccountListDTO> getAllAccounts(@CurrentSecurityContext(expression="authentication")
                                                               Authentication authentication) {
         List<AllAccountListDTO> allAccountList = new ArrayList<>();
+        // Finding all accounts based on userLogin property
         for (Account account : accountRepository.findByUserLogin(authentication.getName())) {
             AllAccountListDTO allAccountListDTO = new AllAccountListDTO(account.getAccountType(),
                                                                         account.getId(),
@@ -100,6 +101,7 @@ public class AccountController {
         return savingsRepository.save(savings);
     }
 
+    // Method to set Savings account interestRate default values
     private void setInterestRate(Savings savings) {
         BigDecimal interestRate = savings.getInterestRate();
         if (interestRate == null) {
@@ -110,7 +112,7 @@ public class AccountController {
         }
     }
 
-
+    // Method to set Savings account minimumBalance default values
     private void setMinimumBalance(Savings savings) {
         Money minimumBalance = savings.getMinimumBalance();
         if (minimumBalance == null) {
@@ -121,7 +123,7 @@ public class AccountController {
         }
     }
 
-
+    // Method to set CreditCard account interestRate default values
     private void setInterestRate(CreditCard creditCard) {
         BigDecimal interestRate = creditCard.getInterestRate();
         if (interestRate == null) {
@@ -132,7 +134,7 @@ public class AccountController {
         }
     }
 
-
+    // Method to set CreditCard account creditLimit default values
     private void setCreditLimit(CreditCard creditCard) {
         Money creditLimit = creditCard.getCreditLimit();
         if (creditLimit == null) {

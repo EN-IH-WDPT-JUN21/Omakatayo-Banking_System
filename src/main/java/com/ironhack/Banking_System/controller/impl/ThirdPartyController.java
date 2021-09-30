@@ -35,7 +35,7 @@ public class ThirdPartyController {
         return thirdPartyRepository.save(thirdParty);
     }
 
-
+    // Mapping to show all ThirdParty's
     @GetMapping("/show/third_party")
     @ResponseStatus(HttpStatus.OK)
     public List<AllThirdPartyDTO> getAllThirdParty() {

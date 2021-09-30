@@ -9,9 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 @RestController
@@ -49,14 +47,14 @@ public class AdminController {
         return accountRepository.save(storedAccount.get());
     }
 
-    // Mapping to create new Admin user
+    // Mapping to create new Admin
     @PostMapping("/new/admin")
     @ResponseStatus(HttpStatus.CREATED)
     public Admin newAdmin(@RequestBody Admin admin) {
         return adminRepository.save(admin);
     }
 
-
+    // Mapping to show all Admins
     @GetMapping("/show/admin")
     @ResponseStatus(HttpStatus.OK)
     public List<Admin> getAllAdmins() {

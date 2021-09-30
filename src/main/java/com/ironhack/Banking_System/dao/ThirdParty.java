@@ -21,6 +21,7 @@ public class ThirdParty extends UserType{
         setHashedKey(hashedKey);
     }
 
+    // Method to create hashedKey
     public void setHashedKey(int hashedKey) {
         this.hashedKey = Objects.hash(getId(), getName(), getEmail());
     }

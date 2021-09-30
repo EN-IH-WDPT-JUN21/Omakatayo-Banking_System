@@ -1,14 +1,12 @@
 package com.ironhack.Banking_System.dao;
 
 import com.ironhack.Banking_System.enums.AccountType;
-import com.ironhack.Banking_System.enums.Status;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import javax.persistence.*;
 import javax.validation.constraints.Positive;
 import java.math.BigDecimal;
-import java.sql.Timestamp;
 
 @Entity
 @Setter
@@ -73,6 +71,7 @@ public class Savings extends Account {
         setMinimumBalance(minimumBalance);
     }
 
+    // Method to set default value for interestRate
     public void setInterestRate(BigDecimal interestRate) {
         if (interestRate.compareTo(new BigDecimal("0.5")) <= 0) {
             this.interestRate = interestRate;
@@ -84,6 +83,7 @@ public class Savings extends Account {
         }
     }
 
+    // Method to set default value for minimumBalance
     public void setMinimumBalance(Money minimumBalance) {
         if (minimumBalance.getAmount().compareTo(new BigDecimal("100")) >= 0) {
             this.minimumBalance = minimumBalance;

@@ -9,6 +9,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+// DTO used to show particular properties when showing list of account holders
 public class AllAccountHoldersDTO {
 
     private Long id;

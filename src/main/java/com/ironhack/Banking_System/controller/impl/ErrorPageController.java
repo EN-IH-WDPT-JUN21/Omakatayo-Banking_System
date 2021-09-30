@@ -9,6 +9,7 @@ public class ErrorPageController implements ErrorController {
 
     private static final String PATH = "/error";
 
+    // Mapping to return custom /error page
     @RequestMapping(value = PATH)
     public String error() {
         return "Sorry, nothing to see here! Please check your URL!";

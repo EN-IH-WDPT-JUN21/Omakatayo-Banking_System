@@ -1,8 +1,6 @@
 package com.ironhack.Banking_System.dao;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.ironhack.Banking_System.enums.AccountType;
-import com.ironhack.Banking_System.enums.Status;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -58,18 +56,21 @@ public class Checking extends Account {
         setMonthlyMaintenanceFee(monthlyMaintenanceFee);
     }
 
+    // Method to set accountType STUDENT_CHECKING when primaryOwner age is less than 24
     public void setAccountType(AccountType accountType) {
         if (Period.between(getPrimaryOwner().getDateOfBirth(), LocalDate.now()).getYears() < 24) {
             this.accountType = AccountType.STUDENT_CHECKING;
         }
     }
 
+    // Method to set default value for minimumBalance
     public void setMinimumBalance(Money minimumBalance) {
         if (Period.between(getPrimaryOwner().getDateOfBirth(), LocalDate.now()).getYears() < 24) {
             this.minimumBalance = new Money(new BigDecimal("0"));
         }
     }
 
+    // Method to set default value for monthlyMaintenanceFee
     public void setMonthlyMaintenanceFee(Money monthlyMaintenanceFee) {
         if (Period.between(getPrimaryOwner().getDateOfBirth(), LocalDate.now()).getYears() < 24) {
             this.monthlyMaintenanceFee = new Money(new BigDecimal("0"));

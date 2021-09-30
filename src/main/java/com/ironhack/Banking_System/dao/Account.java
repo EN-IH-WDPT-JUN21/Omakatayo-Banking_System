@@ -24,6 +24,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+// Super class to create accounts
 public class Account {
 
     @Id
@@ -58,6 +59,7 @@ public class Account {
 
     private String secretKey;
 
+    // Method to generate randomUUID secretKey
     @PrePersist
     public void autoGenerateSecretKey() {
         this.setSecretKey(UUID.randomUUID().toString());
@@ -101,6 +103,7 @@ public class Account {
         this.balance = balance;
     }
 
+    // Method to set userLogin from Authentication object
     public void setUserLogin(String userLogin, @CurrentSecurityContext(expression="authentication")
             Authentication authentication) {
         //Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

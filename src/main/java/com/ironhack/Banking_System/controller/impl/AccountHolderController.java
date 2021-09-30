@@ -34,14 +34,14 @@ public class AccountHolderController {
     private UserTypeRepository userTypeRepository;
 
 
-    // Mapping to create new AccountHolder user
+    // Mapping to create new AccountHolder
     @PostMapping("/new/account_holder")
     @ResponseStatus(HttpStatus.CREATED)
     public AccountHolder newAccountHolder(@RequestBody AccountHolder accountHolder) {
         return accountHolderRepository.save(accountHolder);
     }
 
-
+    // Mapping to show all AccountHolders
     @GetMapping("/show/account_holder")
     @ResponseStatus(HttpStatus.OK)
     public List<AllAccountHoldersDTO> getAllAccountHolders() {
@@ -55,13 +55,14 @@ public class AccountHolderController {
         return allAccountHoldersDTOList;
     }
 
+    // Mapping to show particular AccountHolder
     @GetMapping("/show/account_holder/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Optional<AccountHolder> getById(@PathVariable(name = "id") Long id) {
         return accountHolderRepository.findById(id);
     }
 
-
+    // Mapping to transfer money from AccountHolder to other account
     @PatchMapping("/account_holder/transfer")
     @ResponseStatus(HttpStatus.OK)
     public String accountHolderTransfer(@RequestParam Long userAccountId, @RequestParam Long transferAccountId,
@@ -73,19 +74,25 @@ public class AccountHolderController {
                                                                                         primaryOwnerId);
         Optional<Account> transferAccountSecondary = accountRepository.findByIdAndSecondaryOwnerId(transferAccountId,
                                                                                                secondaryOwnerId);
+        // Checking is only primaryOwnerId is provided
         if (primaryOwnerId.isPresent() && secondaryOwnerId.isEmpty()) {
+            // Checking if transferAccount exists
             if (transferAccountPrimary.isPresent()) {
                 boolean senderHasEnoughMoney = transferAmount.compareTo(userAccount.get().getBalance().getAmount()) <= 0;
+                // Checking if there are sufficient funds on userAccount
                 if (senderHasEnoughMoney) {
+                    // Transfer money
                     transferMoneyPrimaryOwner(userAccountId, transferAccountId, primaryOwnerId, transferAmount);
                     boolean isACheckingAccount = Objects.equals(userAccount.get().getAccountType().toString(), "CHECKING");
                     boolean isACreditCardAccount = Objects.equals(userAccount.get().getAccountType().toString(),
                                                               "CREDIT_CARD");
+                    // Checking if accountType equals "CHECKING" or "CREDIT_CARD" - only those have minimumBalance
                     if (isACheckingAccount || isACreditCardAccount) {
                         BigDecimal currentBalance = userAccount.get().getBalance().getAmount();
                         BigDecimal accountMinimumBalance = userAccount.get().getMinimumBalance().getAmount();
                         boolean balanceIsLessThenMinimum =
                                 currentBalance.compareTo(accountMinimumBalance) < 0;
+                        // Checking if balance is lower than minimumBalance and if so applying penaltyFee
                         if (balanceIsLessThenMinimum) {
                             applyPenaltyFee(userAccount, currentBalance);
                         }
@@ -97,19 +104,25 @@ public class AccountHolderController {
                 return "User account or transfer account not found!!!";
             }
         }
+        // Checking is only secondaryOwnerId is provided
         else if (primaryOwnerId.isEmpty() && secondaryOwnerId.isPresent()) {
+            // Checking if transferAccount exists
             if (transferAccountSecondary.isPresent()) {
                 boolean senderHasEnoughMoney = transferAmount.compareTo(userAccount.get().getBalance().getAmount()) <= 0;
+                // Checking if there are sufficient funds on userAccount
                 if (senderHasEnoughMoney) {
+                    // Transfer money
                     transferMoneySecondaryOwner(userAccountId, transferAccountId, secondaryOwnerId, transferAmount);
                     boolean isACheckingAccount = Objects.equals(userAccount.get().getAccountType().toString(), "CHECKING");
                     boolean isACreditCardAccount = Objects.equals(userAccount.get().getAccountType().toString(),
                                                                   "CREDIT_CARD");
+                    // Checking if accountType equals "CHECKING" or "CREDIT_CARD" - only those have minimumBalance
                     if (isACheckingAccount || isACreditCardAccount) {
                         BigDecimal currentBalance = userAccount.get().getBalance().getAmount();
                         BigDecimal accountMinimumBalance = userAccount.get().getMinimumBalance().getAmount();
                         boolean balanceIsLessThenMinimum =
                                 currentBalance.compareTo(accountMinimumBalance) < 0;
+                        // Checking if balance is lower than minimumBalance and if so applying penaltyFee
                         if (balanceIsLessThenMinimum) {
                             applyPenaltyFee(userAccount, currentBalance);
                         }
@@ -124,7 +137,7 @@ public class AccountHolderController {
         return "Jupiii :). Money have been transferred!";
     }
 
-
+    // Call to service method to transfer money
     private void transferMoneyPrimaryOwner(Long userAccountId,
                                            Long transferAccountId,
                                            Optional<Long> primaryOwnerId,
@@ -135,7 +148,7 @@ public class AccountHolderController {
                                                              transferAmount);
     }
 
-
+    // Call to service method to transfer money
     private void transferMoneySecondaryOwner(Long userAccountId,
                                              Long transferAccountId,
                                              Optional<Long> secondaryOwnerId,
@@ -146,7 +159,7 @@ public class AccountHolderController {
                                                              transferAmount);
     }
 
-
+    // Method to apply penaltyFee
     private void applyPenaltyFee(Optional<Account> userAccount, BigDecimal currentBalance) {
 
         Account accountToUpdate = userAccount.get();
