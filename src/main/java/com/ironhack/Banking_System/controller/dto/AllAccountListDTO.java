@@ -21,7 +21,10 @@ public class AllAccountListDTO {
     private AccountType accountType;
     private Long id;
     private Money balance;
+    private Long primaryOwnerId;
     private String primaryOwnerName;
+    private Long secondaryOwnerId;
+    private String secondaryOwnerName;
     private LocalDateTime creationDate;
     private Status status;
     private Money minimumBalance;

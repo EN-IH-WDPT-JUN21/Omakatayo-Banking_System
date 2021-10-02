@@ -39,10 +39,27 @@ public class AccountController {
         List<AllAccountListDTO> allAccountList = new ArrayList<>();
         // Finding all accounts based on userLogin property
         for (Account account : accountRepository.findByUserLogin(authentication.getName())) {
+
+            AccountHolder secondaryOwner = account.getSecondaryOwner();
+            Long secondaryOwnerId;
+            String secondaryOwnerName;
+
+            if (secondaryOwner != null) {
+                secondaryOwnerId = secondaryOwner.getId();
+                secondaryOwnerName = secondaryOwner.getName();
+            }
+            else {
+                secondaryOwnerId = null;
+                secondaryOwnerName = null;
+            }
+
             AllAccountListDTO allAccountListDTO = new AllAccountListDTO(account.getAccountType(),
                                                                         account.getId(),
                                                                         account.getBalance(),
+                                                                        account.getPrimaryOwner().getId(),
                                                                         account.getPrimaryOwner().getName(),
+                                                                        secondaryOwnerId,
+                                                                        secondaryOwnerName,
                                                                         account.getCreationDate(),
                                                                         account.getStatus(),
                                                                         account.getMinimumBalance(),
@@ -71,10 +88,27 @@ public class AccountController {
         List<AllAccountListDTO> allAccountList = new ArrayList<>();
         // Finding all accounts
         for (Account account : accountRepository.findAll()) {
+
+            AccountHolder secondaryOwner = account.getSecondaryOwner();
+            Long secondaryOwnerId;
+            String secondaryOwnerName;
+
+            if (secondaryOwner != null) {
+                secondaryOwnerId = secondaryOwner.getId();
+                secondaryOwnerName = secondaryOwner.getName();
+            }
+            else {
+                secondaryOwnerId = null;
+                secondaryOwnerName = null;
+            }
+
             AllAccountListDTO allAccountListDTO = new AllAccountListDTO(account.getAccountType(),
                                                                         account.getId(),
                                                                         account.getBalance(),
+                                                                        account.getPrimaryOwner().getId(),
                                                                         account.getPrimaryOwner().getName(),
+                                                                        secondaryOwnerId,
+                                                                        secondaryOwnerName,
                                                                         account.getCreationDate(),
                                                                         account.getStatus(),
                                                                         account.getMinimumBalance(),
@@ -155,19 +189,19 @@ public class AccountController {
         if (storedAccount.isPresent()) {
             storedAccount.get().setBalance(new Money(balance));
         }
-        return "Balance of an account of id: " + id + " was changed to: " + balance;
+        return "Balance of an account of id: " + id + ", was changed to: " + balance + " " + storedAccount.get().getBalance().getCurrency();
     }
 
 
     // Mapping to change account status based on account id
     @PostMapping("/change_status/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Account updateStatus(@PathVariable Long id, @RequestParam Status status) {
+    public String updateStatus(@PathVariable Long id, @RequestParam Status status) {
         Optional<Account> storedAccount = accountRepository.findById(id);
         if (storedAccount.isPresent()) {
             storedAccount.get().setStatus(status);
         }
-        return accountRepository.save(storedAccount.get());
+        return "Status of an account of id: " + id + ", was changed to: " + status + ".";
     }
 
 

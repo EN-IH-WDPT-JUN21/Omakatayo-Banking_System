@@ -31,6 +31,12 @@ If you would like the database to be empty with every run just set <code>spring.
 How the program works
 ==========================
 
+<big>Using <b><font color="yellow">browser or Postman</font></b> navigate to given URL's to go through program functions.<br>
+In <b><font color="yellow">resources/static</font></b> folder you can find a collection of request witch you can import to postman - this way you won't have to write all @RequestBody values from scratch.</big>
+
+Program functionality
+==========================
+
 <big>For yor convenience during the runtime 3 users are created:</big>
 1. Admin user: <b><font color="yellow">admin</font></b>
 2. AccountHolder user: <b><font color="yellow">accountholder</font></b>
@@ -38,10 +44,8 @@ How the program works
 
 Password for every user is "<b><font color="yellow">123456</font></b>"
 
-You can use any of those accounts for authorization but program functionality will depend on the user you'll choose.
+You can use any of those accounts for authorization but program functionality will depend on the user you'll choose.<br><br>
 
-Program functionality
-==========================
 
 <big>These are the operations that you can run in the app<br><font color="red">( add <b>http://localhost:8080/api/v1/ </b> before all given URL's )</font>:</big>
 

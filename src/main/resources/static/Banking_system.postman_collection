@@ -1,0 +1,431 @@
+{
+	"info": {
+		"_postman_id": "1096a1e6-12b3-4c9a-a3e7-2e8b2ad47cf2",
+		"name": "New Collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "http://localhost:8080/api/v1/show/myaccounts",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "123456",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"date_of_birth\" : \"1983-10-18\",\r\n    \"name\" : \"Albert Einstein\",\r\n    \"admitted_by\" : \"356712\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/show/myaccounts",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"show",
+						"myaccounts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/api/v1/show/allaccounts",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "123456",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"date_of_birth\" : \"1983-10-18\",\r\n    \"name\" : \"Albert Einstein\",\r\n    \"admitted_by\" : \"356712\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/show/allaccounts",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"show",
+						"allaccounts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/api/v1/show/account_holder/1",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "123456",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/show/account_holder/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"show",
+						"account_holder",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/api/v1/new/checking",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "thirdparty",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "123456",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"balance\": {\r\n            \"amount\": 3000.00,\r\n            \"currency\": \"USD\"\r\n        },\r\n    \"primaryOwner\": {\r\n        \"name\" : \"Robert DeNiro\",\r\n        \"email\": \"r@d.pl\",\r\n        \"dateOfBirth\" : \"1980-10-18\",\r\n        \"primaryAddress\": {\r\n            \"streetAddress\": \"S\",\r\n            \"postalCode\": \"0\",\r\n            \"city\": \"W\"\r\n        },\r\n        \"mailingAddress\": {\r\n            \"streetAddress\": \"S2\",\r\n            \"postalCode\": \"2\",\r\n            \"city\": \"C\"\r\n        }\r\n    },\r\n    \"secondaryOwner\": {\r\n        \"name\" : \"John Doe\",\r\n        \"email\": \"j@d.pl\",\r\n        \"dateOfBirth\" : \"2000-10-18\",\r\n        \"primaryAddress\": {\r\n            \"streetAddress\": \"S\",\r\n            \"postalCode\": \"0\",\r\n            \"city\": \"W\"\r\n        },\r\n        \"mailingAddress\": {\r\n            \"streetAddress\": \"S2\",\r\n            \"postalCode\": \"2\",\r\n            \"city\": \"C\"\r\n        }\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/new/checking",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"new",
+						"checking"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/api/v1/new/creditcard",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "thirdparty",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "123456",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"balance\": {\r\n            \"amount\": 3000.00,\r\n            \"currency\": \"USD\"\r\n        },\r\n    \"primaryOwner\": {\r\n        \"name\" : \"Robert DeNiro\",\r\n        \"email\": \"r@d.pl\",\r\n        \"dateOfBirth\" : \"1980-10-18\",\r\n        \"primaryAddress\": {\r\n            \"streetAddress\": \"S\",\r\n            \"postalCode\": \"0\",\r\n            \"city\": \"W\"\r\n        },\r\n        \"mailingAddress\": {\r\n            \"streetAddress\": \"S2\",\r\n            \"postalCode\": \"2\",\r\n            \"city\": \"C\"\r\n        }\r\n    },\r\n    \"secondaryOwner\": {\r\n        \"name\" : \"John Doe\",\r\n        \"email\": \"j@d.pl\",\r\n        \"dateOfBirth\" : \"2000-10-18\",\r\n        \"primaryAddress\": {\r\n            \"streetAddress\": \"S\",\r\n            \"postalCode\": \"0\",\r\n            \"city\": \"W\"\r\n        },\r\n        \"mailingAddress\": {\r\n            \"streetAddress\": \"S2\",\r\n            \"postalCode\": \"2\",\r\n            \"city\": \"C\"\r\n        }\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/new/creditcard",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"new",
+						"creditcard"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/api/v1/new/savings",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "accountholder",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "123456",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"balance\": {\r\n            \"amount\": 4000.00,\r\n            \"currency\": \"USD\"\r\n        },\r\n    \"primaryOwner\": {\r\n            \"name\": \"Tom Jones\",\r\n            \"email\": \"a@s.pl\",\r\n            \"dateOfBirth\" : \"1983-10-18\",\r\n            \"primaryAddress\": {\r\n                \"streetAddress\": \"Street\",\r\n                \"postalCode\": \"00-151\",\r\n                \"city\": \"Warsaw\"\r\n            },\r\n            \"mailingAddress\": {\r\n                \"streetAddress\": \"Street2\",\r\n                \"postalCode\": \"00-152\",\r\n                \"city\": \"Cracow\"\r\n            }\r\n        },\r\n        \"minimumBalance\" : {\r\n            \"amount\" : 100.00,\r\n            \"currency\" : \"USD\"\r\n        }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/new/savings",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"new",
+						"savings"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/api/v1/new/third_party",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "123456",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\" : \"accuntholder\",\r\n    \"email\" : \"lesing@santander.pl\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/new/third_party",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"new",
+						"third_party"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/api/v1/change_balance/1?balance=5100",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "123456",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/change_balance/1?balance=5100",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"change_balance",
+						"1"
+					],
+					"query": [
+						{
+							"key": "balance",
+							"value": "5100"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/api/v1/account_holder/transfer?userAccountId=5&userLogin=accountholder&transferAccountId=3&primaryOwnerId=4&transferAmount=100",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "accountholder",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "123456",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PATCH",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/account_holder/transfer?userAccountId=5&userLogin=accountholder&transferAccountId=3&primaryOwnerId=4&transferAmount=100",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"account_holder",
+						"transfer"
+					],
+					"query": [
+						{
+							"key": "userAccountId",
+							"value": "5"
+						},
+						{
+							"key": "userLogin",
+							"value": "accountholder"
+						},
+						{
+							"key": "transferAccountId",
+							"value": "3"
+						},
+						{
+							"key": "primaryOwnerId",
+							"value": "4"
+						},
+						{
+							"key": "transferAmount",
+							"value": "100"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
