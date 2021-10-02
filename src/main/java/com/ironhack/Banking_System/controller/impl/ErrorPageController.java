@@ -12,7 +12,8 @@ public class ErrorPageController implements ErrorController {
     // Mapping to return custom /error page
     @RequestMapping(value = PATH)
     public String error() {
-        return "Sorry, nothing to see here! Please check your URL!";
+        return "Sorry, nothing to see here!\nWrong URL or you don't have permission to do whatever you were trying " +
+                "to do!!!";
     }
 
 }

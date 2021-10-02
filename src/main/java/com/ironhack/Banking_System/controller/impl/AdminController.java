@@ -25,28 +25,6 @@ public class AdminController {
     @Autowired
     private ThirdPartyRepository thirdPartyRepository;
 
-    // Mapping to change account balance based on account id
-    @PostMapping("/change_balance/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public Account updateBalance(@PathVariable Long id, @RequestParam BigDecimal balance) {
-        Optional<Account> storedAccount = accountRepository.findById(id);
-        if (storedAccount.isPresent()) {
-            storedAccount.get().setBalance(new Money(balance));
-        }
-        return accountRepository.save(storedAccount.get());
-    }
-
-    // Mapping to change account status based on account id
-    @PostMapping("/change_status/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public Account updateStatus(@PathVariable Long id, @RequestParam Status status) {
-        Optional<Account> storedAccount = accountRepository.findById(id);
-        if (storedAccount.isPresent()) {
-            storedAccount.get().setStatus(status);
-        }
-        return accountRepository.save(storedAccount.get());
-    }
-
     // Mapping to create new Admin
     @PostMapping("/new/admin")
     @ResponseStatus(HttpStatus.CREATED)

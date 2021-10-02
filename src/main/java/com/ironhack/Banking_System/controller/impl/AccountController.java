@@ -3,6 +3,7 @@ package com.ironhack.Banking_System.controller.impl;
 import com.ironhack.Banking_System.controller.dto.AllAccountListDTO;
 import com.ironhack.Banking_System.dao.*;
 import com.ironhack.Banking_System.enums.AccountType;
+import com.ironhack.Banking_System.enums.Status;
 import com.ironhack.Banking_System.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,10 +30,11 @@ public class AccountController {
     @Autowired
     private SavingsRepository savingsRepository;
 
-    // Mapping to show accounts created by User
-    @GetMapping("/accounts")
+
+    // Mapping to show accounts created by logged-in User
+    @GetMapping("/show/myaccounts")
     @ResponseStatus(HttpStatus.OK)
-    public List<AllAccountListDTO> getAllAccounts(@CurrentSecurityContext(expression="authentication")
+    public List<AllAccountListDTO> getMyAccounts(@CurrentSecurityContext(expression="authentication")
                                                               Authentication authentication) {
         List<AllAccountListDTO> allAccountList = new ArrayList<>();
         // Finding all accounts based on userLogin property
@@ -50,6 +52,47 @@ public class AccountController {
         return allAccountList;
     }
 
+
+    // Mapping to show details of single account created by logged-in User
+    @GetMapping("/show/myaccounts/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public Optional<Account> getAccountDetailsByUserLogin(@PathVariable(name = "id") Long id,
+                                                  @CurrentSecurityContext(expression=
+            "authentication")
+            Authentication authentication) {
+        return accountRepository.findByIdAndUserLogin(id, authentication.getName());
+    }
+
+
+    // Mapping to show all accounts - only for Admin
+    @GetMapping("/show/allaccounts")
+    @ResponseStatus(HttpStatus.OK)
+    public List<AllAccountListDTO> getAllAccounts() {
+        List<AllAccountListDTO> allAccountList = new ArrayList<>();
+        // Finding all accounts
+        for (Account account : accountRepository.findAll()) {
+            AllAccountListDTO allAccountListDTO = new AllAccountListDTO(account.getAccountType(),
+                                                                        account.getId(),
+                                                                        account.getBalance(),
+                                                                        account.getPrimaryOwner().getName(),
+                                                                        account.getCreationDate(),
+                                                                        account.getStatus(),
+                                                                        account.getMinimumBalance(),
+                                                                        account.getInterestRate());
+            allAccountList.add(allAccountListDTO);
+        }
+        return allAccountList;
+    }
+
+
+    // Mapping to show details of any account - only for Admin
+    @GetMapping("/show/allaccounts/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public Optional<Account> getAccountDetailsById(@PathVariable(name = "id") Long id) {
+        return accountRepository.findById(id);
+    }
+
+
     // Mapping to create new Checking account
     @PostMapping("/new/checking")
     @ResponseStatus(HttpStatus.CREATED)
@@ -62,12 +105,13 @@ public class AccountController {
             checking.setMonthlyMaintenanceFee(new Money(new BigDecimal("0")));
         }
 
-        // Checking if user is logged in and if so setting userLogin parameter as username
+        // Checking if user is logged-in and if so setting userLogin parameter as username
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
             checking.setUserLogin(authentication.getName());
         }
         return checkingRepository.save(checking);
     }
+
 
     // Mapping to create new CreditCard account
     @PostMapping("/new/creditcard")
@@ -83,6 +127,7 @@ public class AccountController {
         setInterestRate(creditCard);
         return creditCardRepository.save(creditCard);
     }
+
 
     // Mapping to create new Savings account
     @PostMapping("/new/savings")
@@ -101,6 +146,31 @@ public class AccountController {
         return savingsRepository.save(savings);
     }
 
+
+    // Mapping to change account balance based on account id
+    @PostMapping("/change_balance/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public String updateBalance(@PathVariable Long id, @RequestParam BigDecimal balance) {
+        Optional<Account> storedAccount = accountRepository.findById(id);
+        if (storedAccount.isPresent()) {
+            storedAccount.get().setBalance(new Money(balance));
+        }
+        return "Balance of an account of id: " + id + " was changed to: " + balance;
+    }
+
+
+    // Mapping to change account status based on account id
+    @PostMapping("/change_status/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public Account updateStatus(@PathVariable Long id, @RequestParam Status status) {
+        Optional<Account> storedAccount = accountRepository.findById(id);
+        if (storedAccount.isPresent()) {
+            storedAccount.get().setStatus(status);
+        }
+        return accountRepository.save(storedAccount.get());
+    }
+
+
     // Method to set Savings account interestRate default values
     private void setInterestRate(Savings savings) {
         BigDecimal interestRate = savings.getInterestRate();
@@ -111,6 +181,7 @@ public class AccountController {
             savings.setMinimumBalance(new Money(new BigDecimal("0.5"))); // Setting the highest possible value
         }
     }
+
 
     // Method to set Savings account minimumBalance default values
     private void setMinimumBalance(Savings savings) {
@@ -123,6 +194,7 @@ public class AccountController {
         }
     }
 
+
     // Method to set CreditCard account interestRate default values
     private void setInterestRate(CreditCard creditCard) {
         BigDecimal interestRate = creditCard.getInterestRate();
@@ -133,6 +205,7 @@ public class AccountController {
             creditCard.setMinimumBalance(new Money(new BigDecimal("0.1"))); // Setting the lowest possible value
         }
     }
+
 
     // Method to set CreditCard account creditLimit default values
     private void setCreditLimit(CreditCard creditCard) {

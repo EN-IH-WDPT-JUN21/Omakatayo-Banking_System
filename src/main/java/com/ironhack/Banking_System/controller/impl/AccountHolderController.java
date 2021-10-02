@@ -6,7 +6,10 @@ import com.ironhack.Banking_System.repository.*;
 import com.ironhack.Banking_System.service.interfaces.IAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.CurrentSecurityContext;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -65,11 +68,14 @@ public class AccountHolderController {
     // Mapping to transfer money from AccountHolder to other account
     @PatchMapping("/account_holder/transfer")
     @ResponseStatus(HttpStatus.OK)
-    public String accountHolderTransfer(@RequestParam Long userAccountId, @RequestParam Long transferAccountId,
+    public String accountHolderTransfer(@RequestParam Long userAccountId,
+                                        @CurrentSecurityContext(expression="authentication") Authentication userLogin,
+                                        @RequestParam Long transferAccountId,
                                         @RequestParam Optional<Long> primaryOwnerId,
                                         @RequestParam Optional<Long> secondaryOwnerId,
                                         @RequestParam BigDecimal transferAmount) {
-        Optional<Account> userAccount = accountRepository.findById(userAccountId);
+        Account userAccount = accountRepository.findByIdAndUserLogin(userAccountId, userLogin.getName()).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User account not found!"));
         Optional<Account> transferAccountPrimary = accountRepository.findByIdAndPrimaryOwnerId(transferAccountId,
                                                                                         primaryOwnerId);
         Optional<Account> transferAccountSecondary = accountRepository.findByIdAndSecondaryOwnerId(transferAccountId,
@@ -78,18 +84,18 @@ public class AccountHolderController {
         if (primaryOwnerId.isPresent() && secondaryOwnerId.isEmpty()) {
             // Checking if transferAccount exists
             if (transferAccountPrimary.isPresent()) {
-                boolean senderHasEnoughMoney = transferAmount.compareTo(userAccount.get().getBalance().getAmount()) <= 0;
+                boolean senderHasEnoughMoney = transferAmount.compareTo(userAccount.getBalance().getAmount()) <= 0;
                 // Checking if there are sufficient funds on userAccount
                 if (senderHasEnoughMoney) {
                     // Transfer money
                     transferMoneyPrimaryOwner(userAccountId, transferAccountId, primaryOwnerId, transferAmount);
-                    boolean isACheckingAccount = Objects.equals(userAccount.get().getAccountType().toString(), "CHECKING");
-                    boolean isACreditCardAccount = Objects.equals(userAccount.get().getAccountType().toString(),
+                    boolean isACheckingAccount = Objects.equals(userAccount.getAccountType().toString(), "CHECKING");
+                    boolean isACreditCardAccount = Objects.equals(userAccount.getAccountType().toString(),
                                                               "CREDIT_CARD");
                     // Checking if accountType equals "CHECKING" or "CREDIT_CARD" - only those have minimumBalance
                     if (isACheckingAccount || isACreditCardAccount) {
-                        BigDecimal currentBalance = userAccount.get().getBalance().getAmount();
-                        BigDecimal accountMinimumBalance = userAccount.get().getMinimumBalance().getAmount();
+                        BigDecimal currentBalance = userAccount.getBalance().getAmount();
+                        BigDecimal accountMinimumBalance = userAccount.getMinimumBalance().getAmount();
                         boolean balanceIsLessThenMinimum =
                                 currentBalance.compareTo(accountMinimumBalance) < 0;
                         // Checking if balance is lower than minimumBalance and if so applying penaltyFee
@@ -108,18 +114,18 @@ public class AccountHolderController {
         else if (primaryOwnerId.isEmpty() && secondaryOwnerId.isPresent()) {
             // Checking if transferAccount exists
             if (transferAccountSecondary.isPresent()) {
-                boolean senderHasEnoughMoney = transferAmount.compareTo(userAccount.get().getBalance().getAmount()) <= 0;
+                boolean senderHasEnoughMoney = transferAmount.compareTo(userAccount.getBalance().getAmount()) <= 0;
                 // Checking if there are sufficient funds on userAccount
                 if (senderHasEnoughMoney) {
                     // Transfer money
                     transferMoneySecondaryOwner(userAccountId, transferAccountId, secondaryOwnerId, transferAmount);
-                    boolean isACheckingAccount = Objects.equals(userAccount.get().getAccountType().toString(), "CHECKING");
-                    boolean isACreditCardAccount = Objects.equals(userAccount.get().getAccountType().toString(),
+                    boolean isACheckingAccount = Objects.equals(userAccount.getAccountType().toString(), "CHECKING");
+                    boolean isACreditCardAccount = Objects.equals(userAccount.getAccountType().toString(),
                                                                   "CREDIT_CARD");
                     // Checking if accountType equals "CHECKING" or "CREDIT_CARD" - only those have minimumBalance
                     if (isACheckingAccount || isACreditCardAccount) {
-                        BigDecimal currentBalance = userAccount.get().getBalance().getAmount();
-                        BigDecimal accountMinimumBalance = userAccount.get().getMinimumBalance().getAmount();
+                        BigDecimal currentBalance = userAccount.getBalance().getAmount();
+                        BigDecimal accountMinimumBalance = userAccount.getMinimumBalance().getAmount();
                         boolean balanceIsLessThenMinimum =
                                 currentBalance.compareTo(accountMinimumBalance) < 0;
                         // Checking if balance is lower than minimumBalance and if so applying penaltyFee
@@ -160,14 +166,13 @@ public class AccountHolderController {
     }
 
     // Method to apply penaltyFee
-    private void applyPenaltyFee(Optional<Account> userAccount, BigDecimal currentBalance) {
+    private void applyPenaltyFee(Account userAccount, BigDecimal currentBalance) {
 
-        Account accountToUpdate = userAccount.get();
         BigDecimal balanceAfterPenaltyFee =
-                currentBalance.subtract(new BigDecimal(String.valueOf(accountToUpdate.getPenaltyFee().getAmount())));
-        accountToUpdate.setBalance(new Money(balanceAfterPenaltyFee));
-        accountRepository.save(accountToUpdate);
-        System.out.println("Penalty fee applied to " + accountToUpdate.getId());
+                currentBalance.subtract(new BigDecimal(String.valueOf(userAccount.getPenaltyFee().getAmount())));
+        userAccount.setBalance(new Money(balanceAfterPenaltyFee));
+        accountRepository.save(userAccount);
+        System.out.println("Penalty fee applied to " + userAccount.getId());
     }
 
 }
